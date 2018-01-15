@@ -9,7 +9,7 @@ import { Message } from './message.model';
 export class ChatService {
   private url = 'http://localhost:3000';
   private socket;
-  selectedGroup: string = "";
+  public selectedGroup: string = "";
   openGroups: string[] = [];
   private socketMap: Map<string, any> = new Map();
 

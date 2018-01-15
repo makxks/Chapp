@@ -50,24 +50,13 @@ describe(`ChatComponent tests`, () => {
   it('should connect to the chat service', () => {
     let connect = chai.spy.on(chatService, 'connect');
     comp.ngOnInit();
-    expect(connect).to.have.been.called();
+    expect(connect).to.have.been.called;
   });
 
-  it('should send and return message to chat service with same text', () => {
-    comp.ngOnInit();
-    fixture.detectChanges();
-    let input = fixture.debugElement.query(By.css('textarea')).nativeElement;
-    let length = comp.messages.length;
-    let button = fixture.debugElement.query(By.css('button'));
-
-    fixture.whenStable().then(() => {
-      let testInput = "hi there";
-      input.value = testInput;
-      fixture.detectChanges();
-      button.triggerEventHandler('click', {});
-      expect(comp.messages).to.have.lengthOf(testInput);
-    })
-  });
+  it('should be hidden at the start', () => {
+    let element = fixture.debugElement.query(By.css('div'));
+    expect(element).to.not.exist;
+  })
 
 
   /* snip */

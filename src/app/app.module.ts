@@ -15,6 +15,8 @@ import { TabsComponent } from './layout/tabs/tabs.component';
 import { TabComponent } from './layout/tabs/tab.component';
 import { ContactListComponent } from './layout/contact-list/contact-list.component';
 import { ContactListItemComponent } from './layout/contact-list/contact-list-item.component';
+import { TodoContainerComponent } from './todos/todo-container.component';
+import { TodoComponent } from './todos/todo.component';
 
 import { ChatService } from './chat/chat.service';
 
@@ -30,7 +32,9 @@ import { routing } from './app.routing';
 		TabsComponent,
 		TabComponent,
 		ContactListComponent,
-		ContactListItemComponent
+		ContactListItemComponent,
+		TodoContainerComponent,
+		TodoComponent
 	],
 	imports: [
 		BrowserModule,

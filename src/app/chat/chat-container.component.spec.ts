@@ -27,16 +27,16 @@ describe(`ChatContainerComponent tests`, () => {
     });
     fixture = TestBed.createComponent(ChatContainerComponent);
     comp = fixture.componentInstance;
-    chatService = fixture.debugElement.injector.get(chatService);
+    chatService = fixture.debugElement.injector.get(ChatService);
   });
 
   afterEach(() => {
     getTestBed().resetTestingModule();
   });
 
-  it('should contain no tabs', () => {
+  it('should contain three tabs', () => {
     let tabs = comp.tabs;
-    expect(tabs).to.have.lengthOf(0);
+    expect(tabs).to.have.lengthOf(3);
   });
 
 

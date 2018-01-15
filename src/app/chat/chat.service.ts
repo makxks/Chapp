@@ -3,6 +3,8 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
+import { Message } from './message.model';
+
 @Injectable()
 export class ChatService {
   private url = 'http://localhost:3000';
@@ -46,13 +48,13 @@ export class ChatService {
     }
   }
 
-  sendMessage(message) {
+  sendMessage(message: Message) {
     if(this.socketMap.get(message.groupname)){
       this.socketMap.get(message.groupname).emit('add-message', {
         message: message.text,
         groupname: message.groupname,
-        user: 'Max',
-        time: new Date().getTime() });
+        user: message.user,
+        time: message.time });
     }
   }
 

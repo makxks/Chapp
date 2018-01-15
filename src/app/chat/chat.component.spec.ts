@@ -56,7 +56,7 @@ describe(`ChatComponent tests`, () => {
   it('should send and return message to chat service with same text', () => {
     comp.ngOnInit();
     fixture.detectChanges();
-    let input = fixture.debugElement.query(By.css('input')).nativeElement;
+    let input = fixture.debugElement.query(By.css('textarea')).nativeElement;
     let length = comp.messages.length;
     let button = fixture.debugElement.query(By.css('button'));
 

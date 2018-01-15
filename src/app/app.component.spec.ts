@@ -10,6 +10,7 @@ import { TabComponent } from './layout/tabs/tab.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { ChatContainerComponent } from './chat/chat-container.component';
 import { ContactListComponent } from './layout/contact-list/contact-list.component';
+import { ContactListItemComponent } from './layout/contact-list/contact-list-item.component';
 
 import { ChatService } from './chat/chat.service';
 
@@ -27,7 +28,7 @@ let chatService: ChatService;
 describe(`AppComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent],
+      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent],
       imports: [
         FormsModule,
         RouterTestingModule.withRoutes(

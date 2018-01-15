@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ChatService } from './chat.service';
 
+import { Message } from './message.model';
+
 @Component({
   selector: 'chat-component',
   templateUrl: './chat.component.html',
@@ -12,7 +14,7 @@ import { ChatService } from './chat.service';
 export class ChatComponent implements OnInit, OnDestroy {
   messages = [];
   connection;
-  message = {};
+  message: string;
   @Input() groupname: string;
 
   constructor(private chatService: ChatService, private route: ActivatedRoute) {
@@ -21,9 +23,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   sendMessage() {
     this.chatService.sendMessage({
       text: this.message,
-      groupname: this.groupname
+      groupname: this.groupname,
+      time: new Date().getTime(),
+      user: 'Max'
     });
-    this.message = {};
+    this.message = '';
   }
 
   ngOnInit() {
@@ -32,7 +36,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.messages = [];
 
     this.connection = this.chatService.getMessages(this.groupname).subscribe(message => {
-      message.time = new Date(message.time);
+      //message.time = new Date(message.time);
       this.messages.push(message);
     })
   }

@@ -1,17 +1,17 @@
 export class Message {
   text: string;
-  time: Date;
+  time: number;
   user: string;
-  group: string;
+  groupname: string;
 
   constructor(
     text: string,
-    time: Date,
+    time: number,
     user: string,
-    group: string) {
+    groupname: string) {
       this.text = text;
       this.time = time;
       this.user = user;
-      this.group = group;
+      this.groupname = groupname;
     }
 }

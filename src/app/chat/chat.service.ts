@@ -52,7 +52,7 @@ export class ChatService {
         message: message.text,
         groupname: message.groupname,
         user: 'Max',
-        time: new Date() });
+        time: new Date().getTime() });
     }
   }
 

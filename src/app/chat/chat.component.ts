@@ -32,7 +32,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.messages = [];
 
     this.connection = this.chatService.getMessages(this.groupname).subscribe(message => {
-      console.log(message);
+      message.time = new Date(message.time);
       this.messages.push(message);
     })
   }

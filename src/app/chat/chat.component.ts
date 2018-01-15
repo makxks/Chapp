@@ -12,7 +12,7 @@ import { ChatService } from './chat.service';
 export class ChatComponent implements OnInit, OnDestroy {
   messages = [];
   connection;
-  message;
+  message = {};
   @Input() groupname: string;
 
   constructor(private chatService: ChatService, private route: ActivatedRoute) {
@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       text: this.message,
       groupname: this.groupname
     });
-    this.message = '';
+    this.message = {};
   }
 
   ngOnInit() {

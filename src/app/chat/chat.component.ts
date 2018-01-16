@@ -15,6 +15,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   messages = [];
   connection;
   message: string;
+  selected: boolean = false;
   @Input() groupname: string;
 
   constructor(private chatService: ChatService, private route: ActivatedRoute) {

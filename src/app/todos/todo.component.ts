@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { Todo } from './todo.model';
+
 @Component ({
 	selector: 'todo-component',
 	templateUrl: './todo.component.html',
@@ -7,5 +9,5 @@ import { Component } from '@angular/core';
 })
 
 export class TodoComponent {
-  todo: any = {};
+  todo: Todo = {};
 }

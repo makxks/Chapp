@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 
 export class TodoContainerComponent {
-	todolists: any[] = ['a list'];
+	todoLists: any[] = [];
 }

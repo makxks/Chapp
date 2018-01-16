@@ -36,6 +36,7 @@ describe(`TodoComponent tests`, () => {
   it('should be able to hold a todo of type Todo', () => {
     let todo = comp.todo;
     expect(todo).to.exist;
+    expect(typeof(todo)).to.equal('object');
   });
 
 

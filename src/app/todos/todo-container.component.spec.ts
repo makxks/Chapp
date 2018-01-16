@@ -33,9 +33,9 @@ describe(`TodoContainerComponent tests`, () => {
     getTestBed().resetTestingModule();
   });
 
-  it('should contain more than one todo list', () => {
-    let todoLists = comp.todolists;
-    expect(todoLists).to.have.lengthOf.above(0);
+  it('should contain all todo lists', () => {
+    let todoLists = comp.todoLists;
+    expect(todoLists).to.exist;
   });
 
 

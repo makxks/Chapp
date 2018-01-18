@@ -1,24 +1,25 @@
 <div class="chat-single" *ngIf="groupname==this.chatService.selectedGroup || this.selected">
+  <p>{{groupname}}</p>
   <div class="chat-box">
-    <p>{{groupname}}</p>
-    <textarea class="message-input" [(ngModel)]="message"></textarea>
-    <button class="message-button" (click)="sendMessage()">Click</button>
     <section class="messages">
-      <div *ngFor="let message of messages">
-        <section class="message-time">
-          {{message.time}}:{{message.time}}
-        </section>
-        <section class="message-box">
-          {{message.user}}
-          <hr />
-          <section class="message-text">
-            {{message.text}}
+      <section class="message-list">
+        <div class="message" *ngFor="let message of messages">
+          <section class="message-time">
+            <p>{{message.hour}}:{{message.minute}}</p>
           </section>
-        </section>
-       </div>
+          <section class="message-box">
+            <h4>{{message.user}}</h4>
+            <hr />
+            <section class="message-text">
+              <p>{{message.text}}</p>
+            </section>
+          </section>
+         </div>
+       </section>
      </section>
    </div>
-   <div class="todo-box">
-     
+   <div class="message-input-box">
+     <textarea class="message-input" [(ngModel)]="message" (window:keydown)="sendMessageByKey($event)"></textarea>
+     <button class="message-button" (click)="sendMessage()">Send Message</button>
    </div>
  </div>

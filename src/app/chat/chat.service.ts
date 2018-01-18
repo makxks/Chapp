@@ -54,7 +54,8 @@ export class ChatService {
         message: message.text,
         groupname: message.groupname,
         user: message.user,
-        time: message.time });
+        time: message.time
+      });
     }
   }
 

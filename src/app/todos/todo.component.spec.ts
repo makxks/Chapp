@@ -39,6 +39,21 @@ describe(`TodoComponent tests`, () => {
     expect(typeof(todo)).to.equal('object');
   });
 
+  it('should display all the parts of a todo', () => {
+    let todo = comp.todo;
+    let todoElement = fixture.debugElement.query(By.css('.todo'));
+    let todoName = fixture.debugElement.query(By.css('.todo-name'));
+    let todoDescription = fixture.debugElement.query(By.css('.todo-description'));
+    let todoUser = fixture.debugElement.query(By.css('.todo-user'));
+    let todoDeadline = fixture.debugElement.query(By.css('.todo-deadline'));
+    fixture.detectChanges();
+    expect(todoElement).to.exist;
+    expect(todoName.nativeElement.textContent).to.equal(todo.name);
+    expect(todoDescription.nativeElement.textContent).to.equal(todo.description);
+    expect(todoUser.nativeElement.textContent).to.equal(todo.user);
+    expect(todoDeadline.nativeElement.textContent).to.equal(todo.deadline);
+  })
+
 
   /* snip */
 });

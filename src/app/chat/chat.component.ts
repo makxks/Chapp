@@ -14,21 +14,32 @@ import { Message } from './message.model';
 export class ChatComponent implements OnInit, OnDestroy {
   messages = [];
   connection;
-  message: string;
+  message: string = '';
   selected: boolean = false;
   @Input() groupname: string;
+  @HostListener('window:keydown', ['$event'])
 
   constructor(private chatService: ChatService, private route: ActivatedRoute) {
   }
 
   sendMessage() {
-    this.chatService.sendMessage({
-      text: this.message,
-      groupname: this.groupname,
-      time: new Date().getTime(),
-      user: 'Max'
-    });
+    if(this.message!='')
+    {
+      this.chatService.sendMessage({
+        text: this.message,
+        groupname: this.groupname,
+        time: new Date().getTime(),
+        user: 'Max'
+      });
+    }
     this.message = '';
+  }
+
+  sendMessageByKey($event) {
+    if(event.keyCode==13){
+      this.sendMessage();
+      event.preventDefault();
+    }
   }
 
   ngOnInit() {
@@ -36,8 +47,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.messages = [];
 
     this.connection = this.chatService.getMessages(this.groupname).subscribe(message => {
-      //message.time = new Date(message.time);
-      this.messages.push(message);
+      let newMessage = new Message(message.text, message.time, message.user, message.groupname);
+      this.messages.push(newMessage);
     })
   }
 

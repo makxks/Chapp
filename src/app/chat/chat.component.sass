@@ -2,40 +2,61 @@
   margin-top: 100px
   margin-left: auto
   margin-right: auto
-  width: 95%
+  width: 98%
+  height: 100%
   font-family: 'Georgia'
   font-size: 200%
-  margin: 2.5%
+  margin: 1%
   padding: 0
 
-input
-  width: 80%
-  margin: 0
+.chat-box
+  height: 85%
+  width: 99%
+  margin: 5px
+
+.message-input-box
+  height: 13%
 
 .message-button
   width: 19%
   margin: 0
-  margin-bottom: 2px
   float: right
+  height: 25%
+  font-size: 16px
 
 .message-input
   width: 100%
-  height: 75px
+  height: 60%
   font-size: 18px
+  margin-top: 1%
 
 .messages
+  overflow-y: scroll
   clear: both
+  display: flex
+  flex-direction: column-reverse
   width: 100%
-  height: 500px
+  height: 100%
   background-color: lightyellow
-  .message-time
-    text-align: center
-  .message-box
-    border: 1px solid black
-    border-radius: 2px
-    padding: 10px
-    hr
+  .message-list
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    .message
+      width: 100%
+    .message-time
+      text-align: center
+    .message-box
+      border: 1px solid lightgray
+      border-radius: 2px
+      padding: 3px
       margin: 2px
-    .message-text
-      font-size: 16px
-      white-space: pre-line
+      h4
+        margin: 2px
+      hr
+        margin: 0
+      .message-text
+        font-size: 16px
+        margin: 5px
+        p
+          white-space: pre-wrap

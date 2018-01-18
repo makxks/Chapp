@@ -3,6 +3,8 @@ export class Message {
   time: number;
   user: string;
   groupname: string;
+  hour: number,
+  minute: number
 
   constructor(
     text: string,
@@ -13,5 +15,7 @@ export class Message {
       this.time = time;
       this.user = user;
       this.groupname = groupname;
+      this.hour = new Date(time).getHours();
+      this.minute = new Date(time).getMinutes();
     }
 }

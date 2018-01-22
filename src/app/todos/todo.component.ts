@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-
-import { ChatService } from '../chat/chat.service';
+import { Component, Input } from '@angular/core';
 
 import { Todo } from './todo.model';
 
@@ -11,13 +9,5 @@ import { Todo } from './todo.model';
 })
 
 export class TodoComponent {
-	constructor(private chatService: ChatService){};
-
-  todo: Todo = {
-		name: 'a todo',
-		description: 'a description',
-		user: 'Max',
-		deadline: 'now',
-		group: 'group1'
-	};
+	@Input() todo: Todo;
 }

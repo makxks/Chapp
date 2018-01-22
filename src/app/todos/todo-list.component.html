@@ -1,3 +1,3 @@
-<div>
-
+<div *ngIf="this.groupname==this.chatService.selectedGroup">
+  <todo-component [todo]="todo" *ngFor="let todo of todos"></todo-component>
 </div>

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+import { ChatService } from '../chat/chat.service';
 
 @Component ({
 	selector: 'todo-list-component',
@@ -7,5 +9,22 @@ import { Component } from '@angular/core';
 })
 
 export class TodoListComponent {
-	todoList: any[] = [];
+	@Input() groupname: string;
+	todos: any[] = [];
+
+	constructor(private chatService: ChatService){};
+
+	todo: Todo = {
+		name: 'a todo',
+		description: 'a description',
+		user: 'Max',
+		deadline: 'now',
+		group: 'group1'
+	};
+
+	ngOnInit(){
+		if(this.groupname == 'group1'){
+			this.todos.push(this.todo);
+		}
+	}
 }

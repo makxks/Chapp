@@ -9,11 +9,11 @@ import { ChatService } from '../../chat/chat.service';
 })
 
 export class ContactListItemComponent {
-  @Input() groupname: string;
+  @Input() name: string;
 
   constructor(private chatService: ChatService){}
 
   selectContact(){
-    this.chatService.selectContact(this.groupname);
+    this.chatService.selectContact(this.name);
   }
 }

@@ -9,7 +9,7 @@ import { ChatService } from './chat.service';
 })
 
 export class ChatContainerComponent implements OnInit {
-  tabs: any[] = ['group1', 'group2', 'group3'];
+  tabs: any[] = ['group1', 'group2', 'group3', 'user1', 'user2'];
 
 	constructor(private chatService: ChatService){}
 

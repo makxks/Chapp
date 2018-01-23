@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
 })
 
 export class ContactListComponent {
-	contacts: string[] = ['group1', 'group2', 'group3'];
+	contactGroups: string[] = ['group1', 'group2', 'group3'];
+
+	contactUsers: string[] = ['user1', 'user2'];
 }

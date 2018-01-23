@@ -32,6 +32,30 @@ export class ChatService {
     this.selectedGroup = groupname;
   }
 
+  closeGroup(groupname){
+    for(var i=0; i<this.openGroups.length; i++){
+      if(this.openGroups[i] == groupname){
+        this.openGroups.splice(i,1);
+        if(this.openGroups.length > 0){
+          if(i<this.openGroups.length - 1)
+          {
+            this.selectedGroup = this.openGroups[i];
+          }
+          else if(this.openGroups.length == 1){
+            this.selectedGroup = this.openGroups[0];
+          }
+          else
+          {
+            this.selectedGroup = this.openGroups[i-1];
+          }
+        }
+        else {
+          this.selectedGroup = "";
+        }
+      }
+    }
+  }
+
   connect(groupname){
     this.socketMap.set(groupname, io(this.url + "/?" + groupname));
     if(this.socketMap.get(groupname)){

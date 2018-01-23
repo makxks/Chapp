@@ -15,4 +15,8 @@ export class TabComponent {
 	changeGroup(){
 		this.chatService.selectGroup(this.groupname);
 	}
+
+	closeTab(){
+		this.chatService.closeGroup(this.groupname);
+	}
 }

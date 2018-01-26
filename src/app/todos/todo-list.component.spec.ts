@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
 import { TodoListComponent } from './todo-list.component';
+import { TodoComponent } from './todo.component';
+
+import { ChatService } from '../chat/chat.service';
 
 import { By } from '@angular/platform-browser';
 import { expect } from 'chai';
@@ -15,18 +18,23 @@ chai.use(spies);
 
 let fixture: ComponentFixture<TodoListComponent>;
 let comp: TodoListComponent;
+let chatService: ChatService;
 
-describe(`TodoContainerComponent tests`, () => {
+describe(`TodoListComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TodoListComponent],
+      declarations: [TodoListComponent, TodoComponent],
       imports: [
         RouterTestingModule,
         FormsModule
+      ],
+      providers: [
+        ChatService
       ]
     });
     fixture = TestBed.createComponent(TodoListComponent);
     comp = fixture.componentInstance;
+    chatService = fixture.debugElement.injector.get(ChatService);
   });
 
   afterEach(() => {
@@ -34,7 +42,8 @@ describe(`TodoContainerComponent tests`, () => {
   });
 
   it('should contain a todo list', () => {
-    let list = comp.todoList;
+    fixture.detectChanges();
+    let list = comp.todos;
     expect(list).to.exist;
   });
 

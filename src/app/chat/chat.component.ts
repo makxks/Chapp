@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ChatService } from './chat.service';
@@ -12,12 +12,12 @@ import { Message } from './message.model';
 })
 
 export class ChatComponent implements OnInit, OnDestroy {
+  @Input() groupname: string;
+  //@HostListener('window:keydown', ['$event']);
   messages = [];
   connection;
   message: string = '';
   selected: boolean = false;
-  @Input() groupname: string;
-  @HostListener('window:keydown', ['$event'])
 
   constructor(private chatService: ChatService, private route: ActivatedRoute) {
   }
@@ -25,28 +25,28 @@ export class ChatComponent implements OnInit, OnDestroy {
   sendMessage() {
     if(this.message!='')
     {
-      this.chatService.sendMessage({
-        text: this.message,
-        groupname: this.groupname,
-        time: new Date().getTime(),
-        user: 'Max'
-      });
+      this.chatService.sendMessage(new Message(
+        this.message,
+        new Date().getTime(),
+        'Max',
+        this.groupname)
+      );
     }
     this.message = '';
   }
 
-  sendMessageByKey($event) {
+  /*sendMessageByKey($event) {
     if(event.keyCode==13){
       this.sendMessage();
       event.preventDefault();
     }
-  }
+  }*/
 
   ngOnInit() {
     this.chatService.connect(this.groupname);
     this.messages = [];
 
-    this.connection = this.chatService.getMessages(this.groupname).subscribe(message => {
+    this.connection = this.chatService.getMessages(this.groupname).subscribe((message: Message) => {
       let newMessage = new Message(message.text, message.time, message.user, message.groupname);
       this.messages.push(newMessage);
     })

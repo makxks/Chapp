@@ -10,6 +10,7 @@ import { ChatService } from '../../chat/chat.service';
 
 export class ContactListItemComponent {
   @Input() name: string;
+	newMessages: number = 0;
 
   constructor(private chatService: ChatService){}
 

@@ -1,7 +1,8 @@
 <ul id="contact-list">
   <h4>Contacts</h4>
   <contact-list-item-component class="contact-list-item" [name]="user" *ngFor="let user of contactUsers"></contact-list-item-component>
-  <hr />
+  <button class="add-contact-button">Add Contact</button>
   <h4>Groups</h4>
   <contact-list-item-component class="contact-list-item" [name]="group" *ngFor="let group of contactGroups"></contact-list-item-component>
+  <button class="add-contact-button">Add Group</button>
 </ul>

@@ -1,1 +1,3 @@
-<button class="contact-list-button" (click)="selectContact()">{{name}}</button>
+<button class="contact-list-button" (click)="selectContact()">{{name}}
+  <span class="new-message-count" *ngIf="chatService.newMessageMap.get(name)>0">{{chatService.newMessageMap.get(name)}}</span>
+</button>

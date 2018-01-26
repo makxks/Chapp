@@ -34,9 +34,9 @@ describe(`ChatContainerComponent tests`, () => {
     getTestBed().resetTestingModule();
   });
 
-  it('should contain three tabs', () => {
+  it('should contain five test tabs', () => {
     let tabs = comp.tabs;
-    expect(tabs).to.have.lengthOf(3);
+    expect(tabs).to.have.lengthOf(5);
   });
 
 

@@ -14,6 +14,5 @@ export class ChatContainerComponent implements OnInit {
 	constructor(private chatService: ChatService){}
 
 	ngOnInit(){
-		console.log(this.tabs);
 	}
 }

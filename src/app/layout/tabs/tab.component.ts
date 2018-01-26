@@ -9,14 +9,15 @@ import { ChatService } from '../../chat/chat.service';
 })
 
 export class TabComponent {
-  @Input() groupname: string;
+  @Input() name: string;
+	newMessages: number = 0;
 	constructor(private chatService: ChatService){}
 
 	changeGroup(){
-		this.chatService.selectGroup(this.groupname);
+		this.chatService.selectGroup(this.name);
 	}
 
 	closeTab(){
-		this.chatService.closeGroup(this.groupname);
+		this.chatService.closeGroup(this.name);
 	}
 }

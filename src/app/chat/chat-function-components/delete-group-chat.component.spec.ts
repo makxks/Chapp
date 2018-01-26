@@ -1,10 +1,8 @@
 import { getTestBed, TestBed, ComponentFixture } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
-import { ContactListComponent } from './contact-list.component';
-import { ContactListItemComponent } from './contact-list-item.component';
-
-import { ChatService } from '../../chat/chat.service';
+import { DeleteGroupChatComponent } from './delete-group-chat.component';
+import { ChatService } from '../chat.service';
 
 import { By } from '@angular/platform-browser';
 import { expect } from 'chai';
@@ -13,22 +11,20 @@ import { spy } from 'sinon';
 let chai = require('chai') , spies = require('chai-spies');
 chai.use(spies);
 
-let fixture: ComponentFixture<ContactListComponent>;
-let comp: ContactListComponent;
+let fixture: ComponentFixture<DeleteGroupChatComponent>;
+let comp: DeleteGroupChatComponent;
 let chatService: ChatService;
 
-describe(`ContactListComponent tests`, () => {
+describe(`DeleteGroupChatComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ContactListComponent, ContactListItemComponent],
-      imports: [
-        FormsModule
-			],
+      declarations: [DeleteGroupChatComponent],
+      imports: [FormsModule],
       providers: [
         ChatService
       ]
     });
-    fixture = TestBed.createComponent(ContactListComponent);
+    fixture = TestBed.createComponent(DeleteGroupChatComponent);
     comp = fixture.componentInstance;
     chatService = fixture.debugElement.injector.get(ChatService);
   });
@@ -37,10 +33,8 @@ describe(`ContactListComponent tests`, () => {
     getTestBed().resetTestingModule();
   });
 
-  it('should contain 7 test items', () => {
-		fixture.detectChanges();
-    let tabs = fixture.debugElement.queryAll(By.css('button'));
-    expect(tabs).have.lengthOf(7);
+  it('should be hidden', () => {
+    expect(comp.display == 'none');
   });
 
 

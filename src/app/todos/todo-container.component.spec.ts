@@ -5,6 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
 import { TodoContainerComponent } from './todo-container.component';
+import { TodoListComponent } from './todo-list.component';
+import { TodoComponent } from './todo.component';
+
+import { ChatService } from '../chat/chat.service';
 
 import { By } from '@angular/platform-browser';
 import { expect } from 'chai';
@@ -15,18 +19,23 @@ chai.use(spies);
 
 let fixture: ComponentFixture<TodoContainerComponent>;
 let comp: TodoContainerComponent;
+let chatService: ChatService;
 
 describe(`TodoContainerComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TodoContainerComponent],
+      declarations: [TodoContainerComponent, TodoListComponent, TodoComponent],
       imports: [
         RouterTestingModule,
         FormsModule
+      ],
+      providers: [
+        ChatService
       ]
     });
     fixture = TestBed.createComponent(TodoContainerComponent);
     comp = fixture.componentInstance;
+    chatService = fixture.debugElement.injector.get(ChatService);
   });
 
   afterEach(() => {

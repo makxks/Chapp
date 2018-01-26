@@ -59,30 +59,6 @@ describe(`ChatComponent tests`, () => {
     expect(element).to.not.exist;
   })
 
-  it('should send and recieve same text when selected', () => {
-    let element = fixture.debugElement.query(By.css('div'));
-    expect(element).to.not.exist;
-
-    let selectGroup = chai.spy.on(chatService, 'selectGroup');
-    selectGroup('group1');
-    expect(selectGroup).to.have.been.called;
-    comp.selected = true;
-    fixture.detectChanges();
-    element = fixture.debugElement.query(By.css('div'));
-    let sendMessage = chai.spy.on(comp, 'sendMessage');
-    let button = fixture.debugElement.query(By.css('.message-button'));
-    expect(element).to.exist;
-
-    let input = fixture.debugElement.query(By.css('.message-input')).nativeElement;
-
-    fixture.whenStable().then(() => {
-      input.value = 'a message';
-      expect(comp.message).to.equal('a message');
-      button.triggerEventHandler('click', {});
-      expect(sendMessage).to.have.been.called;
-    })
-  })
-
 
   /* snip */
 });

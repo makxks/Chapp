@@ -9,5 +9,7 @@ export class User {
     email: string,
     contacts: string[],
     groups: string[]
-  )
+  ){
+    
+  }
 }

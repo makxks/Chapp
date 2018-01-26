@@ -9,5 +9,5 @@ import { Todo } from './todo.model';
 })
 
 export class TodoComponent {
-	@Input() todo: Todo;
+	@Input() todo: Todo = new Todo('Max', 'Test', 'Max', 'Now', 'group1');
 }

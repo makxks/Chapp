@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { ChatService } from '../chat/chat.service';
 
+import { Todo } from './todo.model';
+
 @Component ({
 	selector: 'todo-list-component',
 	templateUrl: './todo-list.component.html',

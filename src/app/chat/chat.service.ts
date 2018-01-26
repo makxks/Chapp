@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
 import { Message } from './message.model';
+import { Chat } from './chat.model';
 
 @Injectable()
 export class ChatService {
@@ -12,8 +13,13 @@ export class ChatService {
   selectedGroup: string = "";
   openGroups: string[] = [];
   private socketMap: Map<string, any> = new Map();
+  private newMessageMap: Map<string, number> = new Map();
+  createGroupOccurred = new EventEmitter<Chat>();
+  editGroupOccurred = new EventEmitter<Chat>();
+  deleteGroupOccurred = new EventEmitter<Chat>();
 
   selectGroup(groupname){
+    this.newMessageMap.set(groupname, 0);
     this.selectedGroup = groupname;
   }
 
@@ -29,7 +35,8 @@ export class ChatService {
     if(!found){
       this.openGroups.push(groupname);
     }
-    this.selectedGroup = groupname;
+    this.selectGroup(groupname);
+    this.newMessageMap.set(groupname, 0);
   }
 
   closeGroup(groupname){
@@ -41,7 +48,8 @@ export class ChatService {
           {
             this.selectedGroup = this.openGroups[i];
           }
-          else if(this.openGroups.length == 1){
+          else if(this.openGroups.length == 1)
+          {
             this.selectedGroup = this.openGroups[0];
           }
           else
@@ -88,6 +96,17 @@ export class ChatService {
       let observable = new Observable(observer => {
         this.socketMap.get(groupname).on('message', (data) => {
           observer.next(data);
+          var messageNumber;
+          if(this.selectedGroup!=groupname){
+            if(this.newMessageMap.get(groupname)){
+              messageNumber = this.newMessageMap.get(groupname);
+            }
+            else
+            {
+              messageNumber = 0;
+            }
+            this.newMessageMap.set(groupname, messageNumber+1);
+          }
         });
         return () => {
           this.socketMap.get(groupname).disconnect();
@@ -95,5 +114,29 @@ export class ChatService {
       })
       return observable;
     }
+  }
+
+  createGroup(chat){
+
+  }
+
+  handleCreate(chat){
+    this.createGroupOccurred.emit(chat);
+  }
+
+  editGroup(chat){
+
+  }
+
+  handleEdit(chat){
+    this.editGroupOccurred.emit(chat);
+  }
+
+  deleteGroup(chat){
+
+  }
+
+  handleDelete(chat){
+    this.deleteGroupOccurred.emit(chat);
   }
 }

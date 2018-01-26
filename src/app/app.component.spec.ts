@@ -11,6 +11,9 @@ import { HeaderComponent } from './layout/header/header.component';
 import { ChatContainerComponent } from './chat/chat-container.component';
 import { ContactListComponent } from './layout/contact-list/contact-list.component';
 import { ContactListItemComponent } from './layout/contact-list/contact-list-item.component';
+import { TodoContainerComponent } from './todos/todo-container.component';
+import { TodoListComponent } from './todos/todo-list.component';
+import { TodoComponent } from './todos/todo.component';
 
 import { ChatService } from './chat/chat.service';
 
@@ -28,7 +31,7 @@ let chatService: ChatService;
 describe(`AppComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent],
+      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent, TodoContainerComponent, TodoListComponent, TodoComponent],
       imports: [
         FormsModule,
         RouterTestingModule.withRoutes(

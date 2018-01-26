@@ -3,8 +3,8 @@ export class Message {
   time: number;
   user: string;
   groupname: string;
-  hour: number,
-  minute: number
+  hour: number;
+  minute: number;
 
   constructor(
     text: string,

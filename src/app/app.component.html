@@ -1,6 +1,6 @@
 <logo-component></logo-component>
 <header-component></header-component>
-<section class="second-section">
+<section class="second-section" *ngIf="!profileService.showing">
   <section class="contacts">
     <contact-list-component></contact-list-component>
   </section>
@@ -13,4 +13,7 @@
       </aside>
     </section>
   </section>
+</section>
+<section class="profile" *ngIf="profileService.showing">
+  <profile-component></profile-component>
 </section>

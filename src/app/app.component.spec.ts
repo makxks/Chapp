@@ -14,12 +14,13 @@ import { ContactListItemComponent } from './layout/contact-list/contact-list-ite
 import { TodoContainerComponent } from './todos/todo-container.component';
 import { TodoListComponent } from './todos/todo-list.component';
 import { TodoComponent } from './todos/todo.component';
+import { ProfileComponent } from './profile/profile.component';
 
 import { ChatService } from './chat/chat.service';
 
 import { By } from '@angular/platform-browser';
 import { expect } from 'chai';
-import { spy } from 'sinon';
+import { spy, stub } from 'sinon';
 
 let chai = require('chai') , spies = require('chai-spies');
 chai.use(spies);
@@ -27,23 +28,26 @@ chai.use(spies);
 let fixture: ComponentFixture<AppComponent>;
 let comp: AppComponent;
 let chatService: ChatService;
+let profile: ProfileComponent;
 
 describe(`AppComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent, TodoContainerComponent, TodoListComponent, TodoComponent],
+      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent, TodoContainerComponent, TodoListComponent, TodoComponent, ProfileComponent],
       imports: [
         FormsModule,
         RouterTestingModule.withRoutes(
-          [{ path: '', component: ChatComponent } , { path: ':groupname', component: ChatComponent }]
+          [{ path: '', component: ChatComponent }]
         )
       ],
       providers: [
-        ChatService
+        ChatService,
+        ProfileService
       ]
     });
     fixture = TestBed.createComponent(AppComponent);
     chatService = fixture.debugElement.injector.get(ChatService);
+    profileService = fixture.debugElement.injector.get(ProfileService);
   });
 
   afterEach(() => {
@@ -51,10 +55,10 @@ describe(`AppComponent tests`, () => {
   });
 
   it('should contain a chat container', () => {
-    let routerOutlet = fixture.debugElement.query(By.css('chat-container-component'));
+    let chatContainer = fixture.debugElement.query(By.css('chat-container-component'));
 
-    expect(routerOutlet).to.exist;
-  })
+    expect(chatContainer).to.exist;
+  });
 
 
   /* snip */

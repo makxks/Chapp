@@ -59,6 +59,5 @@ describe(`ChatComponent tests`, () => {
     expect(element).to.not.exist;
   })
 
-
   /* snip */
 });

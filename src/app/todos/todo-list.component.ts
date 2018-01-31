@@ -10,7 +10,7 @@ import { Todo } from './todo.model';
 	styleUrls: [String('./todo-list.component.sass')]
 })
 
-export class TodoListComponent {
+export class TodoListComponent implements OnInit {
 	@Input() groupname: string;
 	todos: any[] = [];
 
@@ -21,7 +21,9 @@ export class TodoListComponent {
 		description: 'a description',
 		user: 'Max',
 		deadline: 'now',
-		group: 'group1'
+		group: 'group1',
+		subTodo: false,
+		parentTodo: ''
 	};
 
 	todo2: Todo = {
@@ -29,7 +31,9 @@ export class TodoListComponent {
 		description: 'to test groups',
 		user: 'Max',
 		deadline: 'later',
-		group: 'group2'
+		group: 'group2',
+		subTodo: false,
+		parentTodo: ''
 	}
 
 	todo3: Todo = {
@@ -37,7 +41,9 @@ export class TodoListComponent {
 		description: 'this is todo3',
 		user: 'Max',
 		deadline: 'now',
-		group: 'group1'
+		group: 'group1',
+		subTodo: false,
+		parentTodo: ''
 	};
 
 	ngOnInit(){

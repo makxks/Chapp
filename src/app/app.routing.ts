@@ -1,11 +1,9 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { ChatComponent } from './chat/chat.component';
-
+import { AppComponent } from './app.component';
 
 const APP_ROUTES: Routes = [
-	{ path: '', redirectTo: '/chat', pathMatch: 'full' },
-	{ path: ':groupname', component: ChatComponent }
+	{ path: '', pathMatch: 'full', component: AppComponent }
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

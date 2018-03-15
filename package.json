@@ -24,7 +24,7 @@
     "@angular/upgrade": "^4.2.0",
     "@ngtools/webpack": "^1.4.1",
     "angular2-jwt": "^0.2.3",
-    "auth0-js": "^8.12.1",
+    "auth0-js": "^9.3.3",
     "auth0-lock": "^10.16.0",
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",

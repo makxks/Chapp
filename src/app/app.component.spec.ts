@@ -17,6 +17,7 @@ import { TodoComponent } from './todos/todo.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { ChatService } from './chat/chat.service';
+import { ProfileService } from './profile/profile.service';
 
 import { By } from '@angular/platform-browser';
 import { expect } from 'chai';
@@ -28,6 +29,7 @@ chai.use(spies);
 let fixture: ComponentFixture<AppComponent>;
 let comp: AppComponent;
 let chatService: ChatService;
+let profileService: ProfileService;
 let profile: ProfileComponent;
 
 describe(`AppComponent tests`, () => {

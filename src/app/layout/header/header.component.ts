@@ -9,13 +9,7 @@ import { ProfileService } from '../../profile/profile.service';
 })
 
 export class HeaderComponent {
-  showingMenu: boolean = false;
-
 	constructor(private profileService: ProfileService){}
-
-  toggleMenu(){
-    this.showingMenu = !this.showingMenu;
-  }
 
 	showHideProfile(){
 		this.profileService.showHide();

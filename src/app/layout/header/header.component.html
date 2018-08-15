@@ -1,11 +1,6 @@
 <div id="header">
-  <button id="header-button" (click)="toggleMenu()"></button>
-</div>
-<div id="menu" *ngIf="showingMenu">
-  <section>
-    <button (click)="showHideProfile()">
-      <p *ngIf="!profileService.showing">Show Profile</p>
-      <p *ngIf="profileService.showing">Hide Profile</p>
-    </button>
-  </section>
+  <div id="menu" (click)="showHideProfile()">
+    <p *ngIf="!profileService.showing">Show Profile</p>
+    <p *ngIf="profileService.showing">Hide Profile</p>
+  </div>
 </div>

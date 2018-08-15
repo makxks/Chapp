@@ -56,12 +56,6 @@ describe(`AppComponent tests`, () => {
     getTestBed().resetTestingModule();
   });
 
-  it('should contain a chat container', () => {
-    let chatContainer = fixture.debugElement.query(By.css('chat-container-component'));
-
-    expect(chatContainer).to.exist;
-  });
-
 
   /* snip */
 });

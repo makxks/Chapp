@@ -35,12 +35,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.message = '';
   }
 
-  /*sendMessageByKey($event) {
-    if(event.keyCode==13){
-      this.sendMessage();
-      event.preventDefault();
-    }
-  }*/
+  sendMessageByKey(/*$event*/) {
+    /*if(event.keyCode==13){
+      if(event.shiftKey){
+        this.sendMessage();
+        event.preventDefault();
+      }
+    }*/
+  }
 
   ngOnInit() {
     this.chatService.connect(this.groupname);

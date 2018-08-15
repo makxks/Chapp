@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 
 import { ProfileComponent } from './profile.component';
 
+import { ProfileService } from './profile.service';
+
 import { By } from '@angular/platform-browser';
 import { expect } from 'chai';
 import { spy } from 'sinon';
@@ -12,15 +14,18 @@ chai.use(spies);
 
 let fixture: ComponentFixture<ProfileComponent>;
 let comp: ProfileComponent;
+let profileService: ProfileService;
 
 describe(`CreateTodoComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ProfileComponent],
-      imports: [FormsModule]
+      imports: [FormsModule],
+      providers: [ProfileService]
     });
     fixture = TestBed.createComponent(ProfileComponent);
     comp = fixture.componentInstance;
+    profileService = fixture.debugElement.injector.get(ProfileService);
   });
 
   afterEach(() => {
@@ -28,7 +33,7 @@ describe(`CreateTodoComponent tests`, () => {
   });
 
   it('should not be showing', () => {
-    expect(comp.showing == false);
+    expect(profileService.showing == false);
   });
 
 

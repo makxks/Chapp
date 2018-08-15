@@ -5,8 +5,6 @@ module.exports = {
     'app': './src/app/main.ts'
   },
 
-  mode: 'development',
-
   resolve: {
     extensions: ['.js', '.ts']
   },
@@ -21,14 +19,6 @@ module.exports = {
         test: /\.css$/,
         use: [{ loader: 'raw-loader' }]
       },
-      {
-				test: /\.ts$/,
-				use: [
-				'awesome-typescript-loader',
-				'angular2-template-loader',
-				'angular2-router-loader'
-				]
-			},
       {
         test: /\.sass$/,
         use: [{

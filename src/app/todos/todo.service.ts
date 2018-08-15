@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { Todo } from './todo.model';
 
@@ -10,19 +10,19 @@ export class TodoService {
   editTodoOccurred = new EventEmitter<Todo>();
   deleteTodoOccurred = new EventEmitter<Todo>();
 
-  addNewContact(todo){
+  addNewContact(todo: Todo){
 
   }
 
-  handleCreate(todo){
+  handleCreate(todo: Todo){
     this.createTodoOccurred.emit(todo);
   }
 
-  removeContact(todo){
+  removeContact(todo: Todo){
 
   }
 
-  handleRemove(todo){
+  handleRemove(todo: Todo){
     this.deleteTodoOccurred.emit(todo);
   }
 }

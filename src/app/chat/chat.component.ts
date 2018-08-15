@@ -14,8 +14,8 @@ import { Message } from './message.model';
 export class ChatComponent implements OnInit, OnDestroy {
   @Input() groupname: string;
   //@HostListener('window:keydown', ['$event']);
-  messages = [];
-  connection;
+  messages: Message[] = [];
+  connection: any;
   message: string = '';
   selected: boolean = false;
 

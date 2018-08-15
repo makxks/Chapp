@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { User } from './user.model';
 
@@ -9,19 +9,19 @@ export class ContactService {
   addNewContactOccurred = new EventEmitter<User>();
   removeContactOccurred = new EventEmitter<User>();
 
-  addNewContact(user){
+  addNewContact(user: User){
 
   }
 
-  handleCreate(user){
+  handleCreate(user: User){
     this.addNewContactOccurred.emit(user);
   }
 
-  removeContact(user){
+  removeContact(user: User){
 
   }
 
-  handleRemove(user){
+  handleRemove(user: User){
     this.removeContactOccurred.emit(user);
   }
 }

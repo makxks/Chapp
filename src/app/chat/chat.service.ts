@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 
 import { Message } from './message.model';
@@ -9,7 +9,7 @@ import { Chat } from './chat.model';
 @Injectable()
 export class ChatService {
   private url = 'http://localhost:3000';
-  private socket;
+  private socket: any;
   selectedGroup: string = "";
   openGroups: string[] = [];
   private socketMap: Map<string, any> = new Map();
@@ -18,12 +18,12 @@ export class ChatService {
   editGroupOccurred = new EventEmitter<Chat>();
   deleteGroupOccurred = new EventEmitter<Chat>();
 
-  selectGroup(groupname){
+  selectGroup(groupname: string){
     this.newMessageMap.set(groupname, 0);
     this.selectedGroup = groupname;
   }
 
-  selectContact(groupname){
+  selectContact(groupname: string){
     var found = false;
     var group: string;
     for(group of this.openGroups){
@@ -39,7 +39,7 @@ export class ChatService {
     this.newMessageMap.set(groupname, 0);
   }
 
-  closeGroup(groupname){
+  closeGroup(groupname: string){
     for(var i=0; i<this.openGroups.length; i++){
       if(this.openGroups[i] == groupname){
         this.openGroups.splice(i,1);
@@ -64,7 +64,7 @@ export class ChatService {
     }
   }
 
-  connect(groupname){
+  connect(groupname: string){
     this.socketMap.set(groupname, io(this.url + "/?" + groupname));
     if(this.socketMap.get(groupname)){
       this.socketMap.get(groupname).on('connect', () => {
@@ -91,10 +91,10 @@ export class ChatService {
     }
   }
 
-  getMessages(groupname) {
+  getMessages(groupname: string) {
     if(this.socketMap.get(groupname)){
       let observable = new Observable(observer => {
-        this.socketMap.get(groupname).on('message', (data) => {
+        this.socketMap.get(groupname).on('message', (data: any) => {
           observer.next(data);
           var messageNumber;
           if(this.selectedGroup!=groupname){
@@ -116,27 +116,27 @@ export class ChatService {
     }
   }
 
-  createGroup(chat){
+  createGroup(chat: Chat){
 
   }
 
-  handleCreate(chat){
+  handleCreate(chat: Chat){
     this.createGroupOccurred.emit(chat);
   }
 
-  editGroup(chat){
+  editGroup(chat: Chat){
 
   }
 
-  handleEdit(chat){
+  handleEdit(chat: Chat){
     this.editGroupOccurred.emit(chat);
   }
 
-  deleteGroup(chat){
+  deleteGroup(chat: Chat){
 
   }
 
-  handleDelete(chat){
+  handleDelete(chat: Chat){
     this.deleteGroupOccurred.emit(chat);
   }
 }

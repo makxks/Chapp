@@ -15,9 +15,13 @@ import { TodoContainerComponent } from './todos/todo-container.component';
 import { TodoListComponent } from './todos/todo-list.component';
 import { TodoComponent } from './todos/todo.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AuthComponent } from './auth/auth.component';
 
 import { ChatService } from './chat/chat.service';
 import { ProfileService } from './profile/profile.service';
+import { AuthService } from './auth/auth.service';
+import { TodoService } from './todos/todo.service';
+import { ContactService } from './layout/contact-list/contact.service';
 
 import { By } from '@angular/platform-browser';
 import { expect } from 'chai';
@@ -35,7 +39,7 @@ let profile: ProfileComponent;
 describe(`AppComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent, TodoContainerComponent, TodoListComponent, TodoComponent, ProfileComponent],
+      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent, TodoContainerComponent, TodoListComponent, TodoComponent, ProfileComponent, AuthComponent],
       imports: [
         FormsModule,
         RouterTestingModule.withRoutes(
@@ -44,7 +48,10 @@ describe(`AppComponent tests`, () => {
       ],
       providers: [
         ChatService,
-        ProfileService
+        ProfileService,
+        TodoService,
+        ContactService,
+        AuthService
       ]
     });
     fixture = TestBed.createComponent(AppComponent);

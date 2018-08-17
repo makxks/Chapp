@@ -30,11 +30,13 @@ import { EditTodoComponent } from './todos/todo-function-components/edit-todo.co
 import { DeleteTodoComponent } from './todos/todo-function-components/delete-todo.component';
 
 import { ProfileComponent } from './profile/profile.component';
+import { AuthComponent } from './auth/auth.component';
 
 import { ChatService } from './chat/chat.service';
 import { TodoService } from './todos/todo.service';
 import { ProfileService } from './profile/profile.service';
 import { ContactService } from './layout/contact-list/contact.service';
+import { AuthService } from './auth/auth.service';
 
 import { routing } from './app.routing';
 
@@ -60,7 +62,8 @@ import { routing } from './app.routing';
 		CreateTodoComponent,
 		EditTodoComponent,
 		DeleteTodoComponent,
-		ProfileComponent
+		ProfileComponent,
+		AuthComponent
 	],
 	imports: [
 		BrowserModule,
@@ -73,6 +76,7 @@ import { routing } from './app.routing';
 		TodoService,
 		ContactService,
 		ProfileService,
+		AuthService,
 		{ provide: LocationStrategy, useClass: HashLocationStrategy }
 	],
 	bootstrap: [AppComponent]

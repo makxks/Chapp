@@ -10,7 +10,7 @@ export class TodoService {
   editTodoOccurred = new EventEmitter<Todo>();
   deleteTodoOccurred = new EventEmitter<Todo>();
 
-  addNewContact(todo: Todo){
+  addNewTodo(todo: Todo){
 
   }
 
@@ -18,11 +18,18 @@ export class TodoService {
     this.createTodoOccurred.emit(todo);
   }
 
-  removeContact(todo: Todo){
+  removeTodo(todo: Todo){
 
   }
 
   handleRemove(todo: Todo){
     this.deleteTodoOccurred.emit(todo);
+  }
+
+  editTodo(todo: Todo){
+  }
+
+  handleEdit(todo: Todo){
+    this.editTodoOccurred.emit(todo);
   }
 }

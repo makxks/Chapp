@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs';
 
-import { User } from './user.model';
+import { User } from '../../auth/user.model';
 
 @Injectable()
 export class ContactService {

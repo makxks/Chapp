@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ContactService } from '../contact.service';
 
-import { User } from '../user.model';
+import { User } from '../../../auth/user.model';
 
 @Component ({
 	selector: 'add-new-contact',

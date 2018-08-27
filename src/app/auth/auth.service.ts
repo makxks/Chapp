@@ -5,7 +5,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
 import * as jwt_decode from 'jwt-decode';
 
-import { HttpClient } from '@angular/common/http';
+import { Http } from '@angular/http';
 import { Response, Headers } from '@angular/http';
 
 import { User } from './user.model';
@@ -37,7 +37,7 @@ export class AuthService {
   public loggedInUser: string = "";
   public emailVerified: boolean = false;
 
-  constructor(/*public errorService: ErrorService,*/ private http: HttpClient) {
+  constructor(/*public errorService: ErrorService,*/ private http: Http) {
     if(localStorage.getItem('access_token') && this.isAuthenticated()){
       if(localStorage.getItem('user')){
         this.loggedInUser = localStorage.getItem('user');

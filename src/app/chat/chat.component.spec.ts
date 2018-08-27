@@ -1,5 +1,3 @@
-
-import {of as observableOf} from 'rxjs';
 import { getTestBed, TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
@@ -31,7 +29,7 @@ describe(`ChatComponent tests`, () => {
       ],
       providers: [
         ChatService,
-        { provide: ActivatedRoute, useValue: { 'params': observableOf([{ 'id': 1 }]) } }
+        { provide: ActivatedRoute, useValue: { 'params': Observable.of([{ 'id': 1 }]) } }
       ]
     });
     fixture = TestBed.createComponent(ChatComponent);

@@ -1,43 +1,15 @@
 {
-	"rulesDirectory": [
-    "node_modules/rxjs-tslint"
-  ],
-	"rules": {
-    "rxjs-collapse-imports": true,
-    "rxjs-pipeable-operators-only": true,
-    "rxjs-no-static-observable-methods": true,
-    "rxjs-proper-imports": true
-  },
   "compilerOptions": {
-    "target": "es5",
-    "module": "es2015",
     "moduleResolution": "node",
-    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "removeComments": true,
-    "noImplicitAny": true,
-    "skipLibCheck": true,
+		"target": "es5",
     "lib": [
-      "ES5",
-	    "ES2015",
-	    "DOM",
-	    "ScriptHost"
-    ],
-    "types": [
-      "node",
-      "mocha",
-      "sinon",
-      "chai",
-      "chai-spies",
-      "core-js"
+      "es5",
+	    "dom",
     ],
     "typeRoots": [
-      "../node_modules/@types"
+      "node_modules/@types"
     ],
-  },
-	"exclude": [
-		"node_modules",
-		"public/js"
-	]
+  }
 }

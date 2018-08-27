@@ -20,6 +20,14 @@ module.exports = {
         use: [{ loader: 'raw-loader' }]
       },
       {
+        test: /\.ts$/,
+        use: [
+        'awesome-typescript-loader',
+        'angular2-template-loader',
+        'angular-router-loader'
+        ]
+      },
+      {
         test: /\.sass$/,
         use: [{
             loader: "style-loader" // creates style nodes from JS strings

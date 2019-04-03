@@ -16,7 +16,7 @@ export class AuthComponent implements OnInit {
 	signupForm: FormGroup;
 	loginForm: FormGroup;
 
-  displayType = 'login';
+  displayType: string = 'login';
 
   constructor(private authService: AuthService, private fb: FormBuilder) {
   }
@@ -33,6 +33,12 @@ export class AuthComponent implements OnInit {
 			[],
 			[]
 		);
+		this.authService.signup(
+			signupUser.name,
+			signupUser.email,
+			this.signupForm.value.password,
+			signupUser
+		);
 		return signupUser;
 	}
 
@@ -47,11 +53,17 @@ export class AuthComponent implements OnInit {
 		return loginUser;
   }
 
+	logout() {
+		this.authService.logout();
+		this.modalCancelled();
+	}
+
 	ngOnInit(){
     this.authService.authCallOccurred
       .subscribe(
-				(result: any) => {
+				(type: string) => {
 					this.authService.showHideAuthModal('block');
+					this.displayType = type;
 				});
 
 		this.signupForm = this.fb.group({
@@ -81,7 +93,9 @@ export class AuthComponent implements OnInit {
   }
 
 	isEmail(control: FormControl): {[s: string]: boolean} {
-        if ((!control.value.match(/^\w.+^\w\.cn$/)) && (!control.value.match(/^\w.+?@^\w\.com$/))) {
+        if ((!control.value.match(/^\w.+^\w\.cn$/)) &&
+				(!control.value.match(/^\w.+?@^\w\.com$/)) &&
+				(!control.value.match(/^\w.+?@^\w\.co.uk$/))) {
             return {noEmail: true};
         }
     }

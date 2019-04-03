@@ -1,6 +1,9 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { ChatService } from './chat.service';
+import { ProfileService } from '../profile/profile.service';
+
+import { Chat } from './chat.model';
 
 @Component ({
 	selector: 'chat-container-component',
@@ -8,11 +11,7 @@ import { ChatService } from './chat.service';
 	styleUrls: [String('./chat-container.component.sass')]
 })
 
-export class ChatContainerComponent implements OnInit {
-  tabs: any[] = ['group1', 'group2', 'group3', 'user1', 'user2'];
+export class ChatContainerComponent {
 
 	constructor(private chatService: ChatService){}
-
-	ngOnInit(){
-	}
 }

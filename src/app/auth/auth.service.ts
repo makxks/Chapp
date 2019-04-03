@@ -1,8 +1,6 @@
-import {throwError as observableThrowError,  Observable } from 'rxjs';
-
-import {catchError, map} from 'rxjs/operators';
 import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import * as jwt_decode from 'jwt-decode';
 
 import { Http } from '@angular/http';
@@ -12,6 +10,8 @@ import { User } from './user.model';
 //import { ErrorService } from '../errors/error.service';
 
 declare var auth0: any;
+
+var currentDBaddress = "localhost:27017/TChat";
 
 interface TokenDto {
   string: string;
@@ -34,8 +34,10 @@ export class AuthService {
   });
 
   public incorrectUserOrPassword = false;
-  public loggedInUser: string = "";
-  public emailVerified: boolean = false;
+  public userIsLoggedIn: boolean = true;
+  public loggedInUser: string = "MAX TEMPORARY";
+  public emailVerified: boolean = true;
+  // temporary
 
   constructor(/*public errorService: ErrorService,*/ private http: Http) {
     if(localStorage.getItem('access_token') && this.isAuthenticated()){
@@ -48,10 +50,10 @@ export class AuthService {
           var errorCode = err.code;
           var errorMessage = err.message;
           //this.errorService.handleError(err);
-          return observableThrowError(err);
         }
         if(user){
         this.loggedInUser = user.username;
+        this.userIsLoggedIn = true;
         //readd later after fully checked and tested
         this.emailVerified = user.email_verified;
         }
@@ -71,7 +73,6 @@ export class AuthService {
         var errorCode = err.code;
         var errorMessage = err.message;
         //this.errorService.handleError(err);
-        return observableThrowError(err);
       }
       if(authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
@@ -83,6 +84,7 @@ export class AuthService {
             window.location.hash = '';
             localStorage.setItem('user', user.username);
             this.loggedInUser = user.username;
+            this.userIsLoggedIn = true;
             this.emailVerified = user.email_verified;
           }
           else{
@@ -103,10 +105,10 @@ export class AuthService {
         var errorCode = err.code;
         var errorMessage = err.message;
         //this.errorService.handleError(err);
-        return observableThrowError(err);
       }
       localStorage.setItem('user', username);
       this.emailVerified = user.email_verified;
+      this.showHideAuthModal('none');
     });
   }
 
@@ -124,7 +126,6 @@ export class AuthService {
         var errorCode = err.code;
         var errorMessage = err.description;
         //this.errorService.handleError(err);
-        return observableThrowError(err);
       };
       /*this.addUser(user)
   			.subscribe(
@@ -142,6 +143,8 @@ export class AuthService {
     console.log(current_ts);
     if(current_ts > sessionIdInfo.exp){
      console.log("Token expired");
+     this.userIsLoggedIn = false;
+     this.loggedInUser = "";
      return false;
    }
     else {
@@ -158,6 +161,7 @@ export class AuthService {
     localStorage.removeItem('id_token');
     localStorage.removeItem('user');
     this.loggedInUser = "";
+    this.userIsLoggedIn = false;
   }
 
   private setUser(authResult: any){
@@ -168,7 +172,8 @@ export class AuthService {
   public addUser(user: User){
     const body = JSON.stringify(user);
     const headers = new Headers({'Content-Type': 'application/json'});
-    /*return this.http.post('https://class-tracker.herokuapp.com/user', body, {headers: headers}).pipe(
+    const url = currentDBaddress + '/user';
+    /*return this.http.post(url, body, {headers: headers}).pipe(
       map((response: Response) => {
         console.log(response);
         response.json();
@@ -176,7 +181,6 @@ export class AuthService {
       catchError((error: Response) => {
         console.log(error.json());
         //this.errorService.handleError(error.json());
-        return observableThrowError(error.json());
       }),);*/
   }
 
@@ -189,7 +193,6 @@ export class AuthService {
         var errorCode = err.code;
         var errorMessage = err.message;
         //this.errorService.handleError(err);
-        return observableThrowError(err);
       }
       else{
         console.log(resp);

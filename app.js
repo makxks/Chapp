@@ -7,6 +7,11 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var appRoutes = require('./routes/app');
+//var chatRoutes = require('./routes/chatRoutes');
+//var messageRoutes = require('./routes/messageRoutes');
+//var todoRoutes = require('./routes/todoRoutes');
+//var contactRoutes = require('./routes/contactRoutes');
+//var userRoutes = require('./routes/user');
 
 var app = express();
 
@@ -31,6 +36,11 @@ app.use(function (req, res, next) {
     next();
 });
 
+//app.use('/user', userRoutes);
+//app.use('/chat', chatRoutes);
+//app.use('/message', messageRoutes);
+//app.use('/todo', todoRoutes);
+//app.use('/contact', contactRoutes);
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler

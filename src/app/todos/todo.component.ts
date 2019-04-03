@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 
+import { TodoService } from './todo.service';
+
 import { Todo } from './todo.model';
+import { User } from '../auth/user.model';
 
 @Component ({
 	selector: 'todo-component',
@@ -9,5 +12,9 @@ import { Todo } from './todo.model';
 })
 
 export class TodoComponent {
-	@Input() todo: Todo = new Todo('Max', 'Test', 'Max', 'Now', 'group1', false, '');
+	@Input() todo: Todo = new Todo('Max', 'Test', 'Max', 'Now', 'group1', false, '', new User('max', 'an@email.email', [], [], []));
+
+	constructor(private todoService: TodoService){
+		
+	};
 }

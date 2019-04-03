@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
+
 import { ChatService } from '../chat.service';
 
 import { Chat } from '../chat.model';

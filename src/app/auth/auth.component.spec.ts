@@ -14,12 +14,19 @@ import { By } from '@angular/platform-browser';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 
+var PassThrough = require('stream').PassThrough;
+
 import { MockBackend } from '@angular/http/testing';
 
 import { User } from './user.model';
 
 let chai = require('chai') , spies = require('chai-spies');
 chai.use(spies);
+
+let sinon = require('sinon');
+var http = require('http');
+
+var xhr, requests;
 
 let fixture: ComponentFixture<AuthComponent>;
 let comp: AuthComponent;
@@ -30,6 +37,8 @@ export class MockAuthService {
   authCallOccurred = new EventEmitter<String>();
 
   display: string = 'none';
+
+  loggedInUser: string = '';
 
   public handleAuthentication(): void {
     return;
@@ -47,8 +56,32 @@ export class MockAuthService {
     return this.display;
   }
 
-  public signup(username: string, email:string, fakepassword: string){
-    return;
+  public signup(username: string, email:string, fakepassword: string, user: any){
+    this.setUser(username, fakepassword)
+      .then(value => this.callback(value));
+    var fakeUser = { name: username, password: fakepassword };
+    return fakeUser;
+  }
+
+  public login(username: string, fakepassword: string){
+    this.setUser(username, fakepassword)
+      .then(value => this.callback(value));
+    var fakeUser = { name: username, password: fakepassword };
+    return fakeUser;
+  }
+
+  public callback(username: any){
+    this.loggedInUser = username;
+  }
+
+  public setUser = function (username: string, password: string){
+      return new Promise((resolve, reject) => {
+        resolve (username);
+      })
+  };
+
+  public logout(){
+
   }
 }
 
@@ -75,10 +108,18 @@ describe(`AuthComponent tests`, () => {
     fixture = TestBed.createComponent(AuthComponent);
     comp = fixture.componentInstance;
     authService = fixture.debugElement.injector.get(AuthService);
+    this.xhr = sinon.useFakeXMLHttpRequest();
+    this.server = sinon.createFakeServer();
+    var requests = this.requests = [];
+
+    this.xhr.onCreate = function(xhr) {
+      requests.push(xhr);
+    };
   });
 
   afterEach(() => {
     getTestBed().resetTestingModule();
+    this.xhr.restore();
   });
 
   it('should have display type of "login" at first', () => {
@@ -153,9 +194,79 @@ describe(`AuthComponent tests`, () => {
     comp.loginForm.value.username = testUsername;
 
     user = comp.onLogin();
+    var fakeuser: any = authService.login(user.name, testPassword)
 
     expect(user.name == comp.loginForm.value.username);
-  })
+    expect(user.name == fakeuser.name);
+    expect(testPassword == fakeuser.password);
+  });
+
+  it('should send the log in details through the back end and returned values should log user in', () => {
+    fixture.detectChanges();
+
+    var testUsername = "Max";
+    var testPassword = "test";
+    comp.loginForm.value.username = testUsername;
+
+    user = comp.onLogin();
+
+    //make a fake request
+    var params = { username: user.name };
+    authService.login(params.username, testPassword);
+  	var request = new PassThrough();
+
+    //request should be tracked in var requests
+    expect(this.requests.length == 1);
+
+    // fake request calls login and callback logs in user
+    expect(this.loggedInUser == "Max");
+  });
+
+  it('should send the sign up details through the back end and log user in', () => {
+    fixture.detectChanges();
+
+    var testUsername = "Max";
+    var testEmail = "blah@blah.com";
+    var testPassword = "test";
+    comp.signupForm.value.username = testUsername;
+
+    user = comp.onSignup();
+
+    //make a fake request
+    var params = { username: user.name };
+    var user: User = new User(params.username, testEmail, [], [], []);
+    authService.signup(params.username, testEmail, testPassword, user);
+
+  	var request = new PassThrough();
+
+    //request should be tracked in var requests
+    expect(this.requests.length == 1);
+
+    // fake request calls signup and callback logs in new user
+    expect(this.loggedInUser == "Max");
+
+  });
+
+  it('should have no logged in user after logout is used', () => {
+    fixture.detectChanges();
+
+    var testUsername = "Max";
+    var testPassword = "test";
+    comp.loginForm.value.username = testUsername;
+
+    user = comp.onLogin();
+    var fakeuser: any = authService.login(user.name, testPassword)
+
+    expect(user.name == comp.loginForm.value.username);
+    expect(user.name == fakeuser.name);
+    expect(testPassword == fakeuser.password);
+
+    expect(authService.loggedInUser == fakeuser.name);
+
+    authService.logout();
+
+    expect(authService.loggedInUser == '');
+  });
 
 
   /* snip */

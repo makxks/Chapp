@@ -1,4 +1,4 @@
 <div class="chat">
-  <chat-component [groupname]="tab" *ngFor="let tab of tabs">
+  <chat-component [chat]="tab" *ngFor="let tab of this.chatService.tabs">
   </chat-component>
 </div>

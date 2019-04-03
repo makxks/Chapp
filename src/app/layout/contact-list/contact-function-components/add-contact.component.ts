@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
+
 import { ContactService } from '../contact.service';
+import { ProfileService } from '../../../profile/profile.service';
+import { NotificationService } from '../../../notifications/notification.service';
 
 import { User } from '../../../auth/user.model';
 
@@ -12,21 +16,31 @@ import { User } from '../../../auth/user.model';
 
 export class AddContactComponent implements OnInit {
   display = 'none';
+	addContactForm: FormGroup;
 
-  constructor(private contactService: ContactService) {
+  constructor(private contactService: ContactService, private fb: FormBuilder, private profileService: ProfileService, private notificationService: NotificationService) {
   }
 
   modalCancelled() {
 		this.display = 'none';
 	}
 
-  onAddNewContactAccepted(user: User) {
-    /*this.contactService.createGroup(chat)
-      .subscribe(
-        (result: any) => {
-					console.log(result);
-				});
-		this.display = 'none';*/
+  addNewContactSubmitted() {
+		//find contact
+
+		//if it exists, send notification
+
+		//if not report error
+		const newContact = new User(
+			this.addContactForm.value.username,
+			'someemail' + this.addContactForm.value.username,
+			[],
+			[],
+			[]
+		);
+		//newContact.contactNames.push(this.profileService.currentUser.name);
+    this.notificationService.addNewContact(newContact);
+		this.display = 'none';
 	}
 
 	ngOnInit(){
@@ -35,5 +49,9 @@ export class AddContactComponent implements OnInit {
 				(result: any) => {
 					this.display = 'block';
 				});
+
+		this.addContactForm = this.fb.group({
+			username: ['', Validators.required]
+		})
 	}
 }

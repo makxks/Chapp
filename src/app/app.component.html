@@ -1,23 +1,39 @@
-<logo-component></logo-component>
-<header-component></header-component>
 
-<section class="second-section" *ngIf="!profileService.showing">
-  <section class="contacts">
-    <contact-list-component></contact-list-component>
-  </section>
-  <section class="chat-and-tabs">
-    <tabs-component class="chat-tabs"></tabs-component>
-    <section class="group-content">
-      <chat-container-component class="chat-container"></chat-container-component>
-      <aside class="todos">
-        <todo-container-component></todo-container-component>
-      </aside>
+<section class="page-container">
+  <logo-component *ngIf="authService.userIsLoggedIn"></logo-component>
+  <header-component *ngIf="authService.userIsLoggedIn"></header-component>
+
+  <div>
+    <button (click)="this.profileService.setManualUser('Max'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall()">Max</button>
+    <button (click)="this.profileService.setManualUser('Tom'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall()">Tom</button>
+    <button (click)="this.profileService.setManualUser('Lucie'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall()">Lucie</button>
+  </div>
+
+  <section class="second-section" *ngIf="authService.userIsLoggedIn && !profileService.showing && !notificationService.showing">
+    <section class="contacts">
+      <contact-list-component></contact-list-component>
+    </section>
+    <section class="chat-and-tabs">
+      <tabs-component class="chat-tabs"></tabs-component>
+      <section class="group-content">
+        <chat-container-component class="chat-container"></chat-container-component>
+        <aside class="todos">
+          <todo-container-component></todo-container-component>
+        </aside>
+      </section>
     </section>
   </section>
-</section>
 
-<section class="profile" *ngIf="profileService.showing">
-  <profile-component></profile-component>
+  <section class="profile" *ngIf="authService.userIsLoggedIn && profileService.showing">
+    <profile-component></profile-component>
+  </section>
+
+  <section class="notifications" *ngIf="authService.userIsLoggedIn && notificationService.showing">
+    <notification-list-component></notification-list-component>
+  </section>
+
+  <section class="landing" *ngIf="!authService.userIsLoggedIn">
+  </section>
 </section>
 
 <footer>
@@ -25,3 +41,9 @@
 </footer>
 
 <auth-component></auth-component>
+
+<create-todo></create-todo>
+<delete-todo></delete-todo>
+<edit-todo></edit-todo>
+
+<add-new-contact></add-new-contact>

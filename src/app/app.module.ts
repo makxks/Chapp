@@ -32,6 +32,10 @@ import { DeleteTodoComponent } from './todos/todo-function-components/delete-tod
 import { ProfileComponent } from './profile/profile.component';
 import { AuthComponent } from './auth/auth.component';
 
+import { NotificationListComponent } from './notifications/notification-list.component';
+import { NotificationComponent } from './notifications/notification.component';
+import { NotificationService } from './notifications/notification.service';
+
 import { ChatService } from './chat/chat.service';
 import { TodoService } from './todos/todo.service';
 import { ProfileService } from './profile/profile.service';
@@ -63,7 +67,9 @@ import { routing } from './app.routing';
 		EditTodoComponent,
 		DeleteTodoComponent,
 		ProfileComponent,
-		AuthComponent
+		AuthComponent,
+		NotificationListComponent,
+		NotificationComponent
 	],
 	imports: [
 		BrowserModule,
@@ -78,6 +84,7 @@ import { routing } from './app.routing';
 		ContactService,
 		ProfileService,
 		AuthService,
+		NotificationService,
 		{ provide: LocationStrategy, useClass: HashLocationStrategy }
 	],
 	bootstrap: [AppComponent]

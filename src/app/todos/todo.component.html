@@ -1,8 +1,13 @@
-<div class="todo-container">
-  <div class="todo">
+<section class="todo-container">
+  <section class="todo">
     <h3 class="todo-name">{{todo.name}}</h3>
     <p class="todo-description">{{todo.description}}</p>
     <p class="todo-user">{{todo.user}}</p>
     <p class="todo-deadline">{{todo.deadline}}</p>
-  </div>
-</div>
+    <p>Only show edit button and delete button if user is owner</p>
+    <section class="todo-buttons">
+      <button class="edit-todo-button" (click)="this.todoService.handleEdit()">Edit</button>
+      <button class="delete-todo-button" (click)="this.todoService.handleRemove()">Delete</button>
+    </section>
+  </section>
+</section>

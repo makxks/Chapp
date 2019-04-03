@@ -3,20 +3,45 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
+import { ProfileService } from '../profile/profile.service';
+
 import { Message } from './message.model';
 import { Chat } from './chat.model';
 
 @Injectable()
 export class ChatService {
   private url = 'http://localhost:3000';
-  private socket: any;
+  socket: SocketIOClient.Socket = io();
+  
   selectedGroup: string = "";
   openGroups: string[] = [];
+  tabs: Chat[] = [];
+
   private socketMap: Map<string, any> = new Map();
   private newMessageMap: Map<string, number> = new Map();
+
   createGroupOccurred = new EventEmitter<Chat>();
   editGroupOccurred = new EventEmitter<Chat>();
   deleteGroupOccurred = new EventEmitter<Chat>();
+
+  constructor(private profileService: ProfileService){}
+
+  connectToOverall(){
+    this.socket.on('created-chat-room', (chat) => {
+      for(var i=0; i<chat.users.length; i++){
+        if(chat.users[i].name == this.profileService.currentUser.name){
+          if(!this.profileService.currentUser.chats.includes(chat)){
+            this.tabs.push(chat);
+            this.selectContact(chat.name);
+            console.log(this.tabs);
+            chat.users[i].chats.push(chat.name);
+            break;
+          }
+        }
+      }
+    })
+
+  }
 
   selectGroup(groupname: string){
     this.newMessageMap.set(groupname, 0);
@@ -81,10 +106,10 @@ export class ChatService {
   }
 
   sendMessage(message: Message) {
-    if(this.socketMap.get(message.groupname)){
-      this.socketMap.get(message.groupname).emit('add-message', {
+    if(this.socketMap.get(message.chat)){
+      this.socketMap.get(message.chat).emit('add-message', {
         message: message.text,
-        groupname: message.groupname,
+        groupname: message.chat,
         user: message.user,
         time: message.time
       });
@@ -116,15 +141,15 @@ export class ChatService {
     }
   }
 
-  createGroup(chat: Chat){
-
+  createChat(chat: Chat){
+    this.socket.emit('chat-creation', chat);
   }
 
   handleCreate(chat: Chat){
     this.createGroupOccurred.emit(chat);
   }
 
-  editGroup(chat: Chat){
+  editChat(chat: Chat){
 
   }
 
@@ -132,7 +157,7 @@ export class ChatService {
     this.editGroupOccurred.emit(chat);
   }
 
-  deleteGroup(chat: Chat){
+  deleteChat(chat: Chat){
 
   }
 

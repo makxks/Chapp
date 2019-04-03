@@ -1,6 +1,19 @@
 <div id="header">
-  <div id="menu" (click)="showHideProfile()">
+  <div *ngIf="authService.userIsLoggedIn" class="menu-item" (click)="showHideNotifications()">
+    <p *ngIf="!notificationService.showing">Show Notifications</p>
+    <p *ngIf="notificationService.showing">Hide Notifications</p>
+  </div>
+  <div *ngIf="authService.userIsLoggedIn" class="menu-item" (click)="showHideProfile()">
     <p *ngIf="!profileService.showing">Show Profile</p>
     <p *ngIf="profileService.showing">Hide Profile</p>
+  </div>
+  <div *ngIf="!authService.userIsLoggedIn" class="menu-item" (click)="showLoginPage()">
+    <p>Login</p>
+  </div>
+  <div *ngIf="authService.userIsLoggedIn" class="menu-item" (click)="showLogoutPage()">
+    <p>Logout</p>
+  </div>
+  <div *ngIf="!authService.userIsLoggedIn" class="menu-item" (click)="showSignupPage()">
+    <p>Signup</p>
   </div>
 </div>

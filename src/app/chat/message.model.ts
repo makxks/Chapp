@@ -2,7 +2,7 @@ export class Message {
   text: string;
   time: number;
   user: string;
-  groupname: string;
+  chat: string;
   hour: number;
   minute: number;
 
@@ -10,11 +10,11 @@ export class Message {
     text: string,
     time: number,
     user: string,
-    groupname: string) {
+    chat: string) {
       this.text = text;
       this.time = time;
       this.user = user;
-      this.groupname = groupname;
+      this.chat = chat;
       this.hour = new Date(time).getHours();
       this.minute = new Date(time).getMinutes();
     }

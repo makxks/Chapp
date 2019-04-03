@@ -16,7 +16,7 @@ let fixture: ComponentFixture<ProfileComponent>;
 let comp: ProfileComponent;
 let profileService: ProfileService;
 
-describe(`CreateTodoComponent tests`, () => {
+describe(`ProfileComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ProfileComponent],

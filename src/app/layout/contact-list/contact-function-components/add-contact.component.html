@@ -9,12 +9,16 @@
       </div>
       <div class="modal-body">
         <form>
-          <!-- Add form here -->
+          <form id="add-contact-form" [formGroup]="addContactForm" (ngSubmit)="addNewContactSubmitted()">
+            <!-- Add form here -->
+            <div class="form-group formInput">
+              <label for="username">Contact Name</label>
+              <input formControlName="username" type="text" id="new-contact-name" #username class="form-control">
+              <span>Invalid contact name</span>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Contact</button>
+          </form>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="onAddNewContactAccepted(chat)">Create Group</button>
-        <button type="button" class="btn btn-default" (click)="modalCancelled()">Cancel</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

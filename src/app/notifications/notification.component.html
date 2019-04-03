@@ -1,0 +1,6 @@
+<section>
+  <p>{{this.notification.sender.name}}</p>
+  <p *ngIf="this.notification.isGroup">{{this.notification.groupName}}</p>
+  <p>{{this.notification.timeSent}}</p>
+  <button (click)="this.contactService.emitAccept(this.notification)">Accept</button>
+</section>

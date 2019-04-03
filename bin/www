@@ -27,6 +27,7 @@ let io = require('socket.io')(server);
  */
 
 require('./groupchat/groupchat')(io);
+require('./server/server')(io);
 
 server.listen(port);
 server.on('error', onError);

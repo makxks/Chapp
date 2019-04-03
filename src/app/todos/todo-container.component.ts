@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { TodoService } from './todo.service';
+
 @Component ({
 	selector: 'todo-container-component',
 	templateUrl: './todo-container.component.html',
@@ -7,5 +9,8 @@ import { Component } from '@angular/core';
 })
 
 export class TodoContainerComponent {
+	constructor(private todoService: TodoService) {
+  }
+
 	todoLists: any[] = ['group1', 'group2', 'group3'];
 }

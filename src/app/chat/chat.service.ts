@@ -12,7 +12,7 @@ import { Chat } from './chat.model';
 export class ChatService {
   private url = 'http://localhost:3000';
   socket: SocketIOClient.Socket = io();
-  
+
   selectedGroup: string = "";
   openGroups: string[] = [];
   tabs: Chat[] = [];
@@ -23,6 +23,7 @@ export class ChatService {
   createGroupOccurred = new EventEmitter<Chat>();
   editGroupOccurred = new EventEmitter<Chat>();
   deleteGroupOccurred = new EventEmitter<Chat>();
+  showGroupDetailsOccurred = new EventEmitter<Chat>();
 
   constructor(private profileService: ProfileService){}
 
@@ -30,17 +31,16 @@ export class ChatService {
     this.socket.on('created-chat-room', (chat) => {
       for(var i=0; i<chat.users.length; i++){
         if(chat.users[i].name == this.profileService.currentUser.name){
-          if(!this.profileService.currentUser.chats.includes(chat)){
+          if(!this.profileService.currentUser.chatNames.includes(chat.name)){
+            this.profileService.currentUser.chatNames.push(chat.name);
             this.tabs.push(chat);
-            this.selectContact(chat.name);
-            console.log(this.tabs);
-            chat.users[i].chats.push(chat.name);
+            this.selectContact(chat.name, chat.isGroup);
+            chat.users[i].chatNames.push(chat.name);
             break;
           }
         }
       }
     })
-
   }
 
   selectGroup(groupname: string){
@@ -48,20 +48,37 @@ export class ChatService {
     this.selectedGroup = groupname;
   }
 
-  selectContact(groupname: string){
+  selectContact(groupname: string, isGroup: boolean = false){
     var found = false;
     var group: string;
+    var foundName:string = "";
     for(group of this.openGroups){
-      if(groupname == group){
+      if(groupname + " and " + this.profileService.currentUser.name == group){
         found = true;
+        foundName = groupname + " and " + this.profileService.currentUser.name;
         break;
+      }
+      else if(this.profileService.currentUser.name + " and " + groupname == group){
+        found = true;
+        foundName = this.profileService.currentUser.name + " and " + groupname;
+        break;
+      }
+      else if(groupname == group){
+        found = true;
+        foundName = groupname;
       }
     }
     if(!found){
-      this.openGroups.push(groupname);
+      if(groupname.includes(" and ") || isGroup){
+        foundName = groupname;
+      }
+      else{
+        foundName = groupname + " and " + this.profileService.currentUser.name;
+      }
+      this.openGroups.push(foundName);
     }
-    this.selectGroup(groupname);
-    this.newMessageMap.set(groupname, 0);
+    this.selectGroup(foundName);
+    this.newMessageMap.set(foundName, 0);
   }
 
   closeGroup(groupname: string){

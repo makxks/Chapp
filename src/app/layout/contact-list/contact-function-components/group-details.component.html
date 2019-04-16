@@ -1,0 +1,33 @@
+<div class="backdrop" [ngStyle] = "{'display': display}"></div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle] = "{'display': display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="modalCancelled()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{this.chat.name}}</h4>
+      </div>
+      <div class="modal-body">
+        <section>
+          <h4>Group Members</h4>
+          <section class="members">
+            <section class="member-details" *ngFor="let user of this.chat.users">
+              <p>{{user.name}}</p>
+              <p>{{user.email}}</p>
+            </section>
+          </section>
+        </section>
+        <section>
+          <h4>Group Tasks</h4>
+          <section class="tasks">
+            <section class="task-details">
+            </section>
+          </section>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary edit-button" (click)="this.editGroup(this.chat)">Edit Group</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

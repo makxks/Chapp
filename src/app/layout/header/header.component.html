@@ -1,19 +1,21 @@
 <div id="header">
   <div *ngIf="authService.userIsLoggedIn" class="menu-item" (click)="showHideNotifications()">
-    <p *ngIf="!notificationService.showing">Show Notifications</p>
-    <p *ngIf="notificationService.showing">Hide Notifications</p>
+    <button class="btn btn-primary notification-button" *ngIf="!notificationService.showing">Show Notifications
+    <div id="notifications-marker" *ngIf="notificationService.notifications.length > 0 || notificationService.groupNotifications.length > 0"></div></button>
+    <button class="btn btn-primary notification-button" *ngIf="notificationService.showing">Hide Notifications
+    <div id="notifications-marker" *ngIf="notificationService.notifications.length > 0 || notificationService.groupNotifications.length > 0"></div></button>
   </div>
   <div *ngIf="authService.userIsLoggedIn" class="menu-item" (click)="showHideProfile()">
-    <p *ngIf="!profileService.showing">Show Profile</p>
-    <p *ngIf="profileService.showing">Hide Profile</p>
+    <button class="btn btn-primary" *ngIf="!profileService.showing">Show Profile</button>
+    <button class="btn btn-primary" *ngIf="profileService.showing">Hide Profile</button>
   </div>
   <div *ngIf="!authService.userIsLoggedIn" class="menu-item" (click)="showLoginPage()">
-    <p>Login</p>
+    <button class="btn btn-primary">Login</button>
   </div>
   <div *ngIf="authService.userIsLoggedIn" class="menu-item" (click)="showLogoutPage()">
-    <p>Logout</p>
+    <button class="btn btn-primary">Logout</button>
   </div>
   <div *ngIf="!authService.userIsLoggedIn" class="menu-item" (click)="showSignupPage()">
-    <p>Signup</p>
+    <button class="btn btn-primary">Signup</button>
   </div>
 </div>

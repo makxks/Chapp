@@ -1,6 +1,33 @@
-<section>
-  <p>{{this.notification.sender.name}}</p>
-  <p *ngIf="this.notification.isGroup">{{this.notification.groupName}}</p>
-  <p>{{this.notification.timeSent}}</p>
-  <button (click)="this.contactService.emitAccept(this.notification)">Accept</button>
+<section class="notification" *ngIf="!this.notification.isGroup">
+  <section class="notification-details">
+    <p class="detail"><b>Sender</b></p>
+    <p class="detail"><b>Time of request</b></p>
+    <div class="detail-buffer"> </div>
+  </section>
+  <section class="notification-details">
+    <p class="detail">{{this.notification.sender.name}}</p>
+    <p class="detail">{{this.notification.timeSent}}</p>
+    <section class="button-group">
+      <button class="btn btn-primary" (click)="this.contactService.emitAccept(this.notification); this.notificationService.agreeToNotification(this.notification)">Accept</button>
+      <button class="btn btn-danger" (click)="this.notificationService.clearNotification(this.notification)">Decline</button>
+    </section>
+  </section>
+</section>
+
+<section class="notification" *ngIf="this.notification.isGroup">
+  <section class="notification-details">
+    <p class="detail-for-group"><b>Sender</b></p>
+    <p class="detail-for-group"><b>Group Name</b></p>
+    <p class="detail-for-group"><b>Time of request</b></p>
+    <div class="detail-buffer-for-group"> </div>
+  </section>
+  <section class="notification-details">
+    <p class="detail-for-group">{{this.notification.sender.name}}</p>
+    <p class="detail-for-group">{{this.notification.groupName}}</p>
+    <p class="detail-for-group">{{this.notification.timeSent}}</p>
+    <section class="button-group-for-group">
+      <button class="btn btn-primary"(click)="this.contactService.emitGroupAccept(this.notification); this.notificationService.agreeToGroupNotification(this.notification)">Accept</button>
+      <button class="btn btn-danger" (click)="this.notificationService.clearNotification(this.notification)">Decline</button>
+    </section>
+  </section>
 </section>

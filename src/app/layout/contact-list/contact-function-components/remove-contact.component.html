@@ -5,15 +5,15 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="modalCancelled()"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Remove Conatct</h4>
+        <h3 class="modal-title">Remove Contact</h3>
       </div>
       <div class="modal-body">
         <form>
-          <h2>Are you sure you want to remove this contact?</h2>
+          <h4>Are you sure you want to remove this contact?</h4>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="onRemoveContactAccepted(chat)">Create Group</button>
+        <button type="button" class="btn btn-danger" (click)="onRemoveContactAccepted(this.user)">Remove Contact</button>
         <button type="button" class="btn btn-default" (click)="modalCancelled()">Cancel</button>
       </div>
     </div><!-- /.modal-content -->

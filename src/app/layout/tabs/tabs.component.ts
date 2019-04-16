@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 
 import { ChatService } from '../../chat/chat.service';
 
+import { Chat } from '../../chat/chat.model';
+
 @Component ({
 	selector: 'tabs-component',
 	templateUrl: './tabs.component.html',

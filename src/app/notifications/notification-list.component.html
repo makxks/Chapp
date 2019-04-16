@@ -1,3 +1,4 @@
-<section>
+<section class="notification-container">
   <notification-component class="notification-list-item" [notification]="notification" *ngFor="let notification of this.notificationService.notifications"></notification-component>
+  <notification-component class="notification-list-item" [notification]="notification" [chat]="chat" *ngFor="let notification of this.notificationService.groupNotifications; let chat of this.notificationService.groupsPending"></notification-component>
 </section>

@@ -8,9 +8,6 @@ import { AppComponent } from './app.component';
 
 import { ChatComponent } from './chat/chat.component';
 import { ChatContainerComponent } from './chat/chat-container.component';
-import { CreateGroupChatComponent } from './chat/chat-function-components/create-group-chat.component';
-import { EditGroupChatComponent } from './chat/chat-function-components/edit-group-chat.component';
-import { DeleteGroupChatComponent } from './chat/chat-function-components/delete-group-chat.component';
 
 import { LogoComponent } from './layout/logo/logo.component';
 import { HeaderComponent } from './layout/header/header.component';
@@ -21,6 +18,10 @@ import { ContactListComponent } from './layout/contact-list/contact-list.compone
 import { ContactListItemComponent } from './layout/contact-list/contact-list-item.component';
 import { AddContactComponent } from './layout/contact-list/contact-function-components/add-contact.component';
 import { RemoveContactComponent } from './layout/contact-list/contact-function-components/remove-contact.component';
+import { AddGroupComponent } from './layout/contact-list/contact-function-components/add-group.component';
+import { EditGroupComponent } from './layout/contact-list/contact-function-components/edit-group.component';
+import { GroupDetailsComponent } from './layout/contact-list/contact-function-components/group-details.component';
+import { LeaveGroupComponent } from './layout/contact-list/contact-function-components/leave-group.component';
 
 import { TodoContainerComponent } from './todos/todo-container.component';
 import { TodoListComponent } from './todos/todo-list.component';
@@ -49,9 +50,6 @@ import { routing } from './app.routing';
 		AppComponent,
 		ChatComponent,
 		ChatContainerComponent,
-		CreateGroupChatComponent,
-		EditGroupChatComponent,
-		DeleteGroupChatComponent,
 		LogoComponent,
 		HeaderComponent,
 		TabsComponent,
@@ -60,6 +58,10 @@ import { routing } from './app.routing';
 		ContactListItemComponent,
 		AddContactComponent,
 		RemoveContactComponent,
+		AddGroupComponent,
+		EditGroupComponent,
+		GroupDetailsComponent,
+		LeaveGroupComponent,
 		TodoContainerComponent,
 		TodoListComponent,
 		TodoComponent,
@@ -69,7 +71,7 @@ import { routing } from './app.routing';
 		ProfileComponent,
 		AuthComponent,
 		NotificationListComponent,
-		NotificationComponent
+		NotificationComponent,
 	],
 	imports: [
 		BrowserModule,

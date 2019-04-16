@@ -10,11 +10,16 @@ import { ChatService } from '../../chat/chat.service';
 
 export class ContactListItemComponent {
   @Input() name: string;
+	@Input() group: boolean = false;
 	newMessages: number = 0;
 
   constructor(private chatService: ChatService){}
 
   selectContact(){
-    this.chatService.selectContact(this.name);
+    this.chatService.selectContact(this.name, this.group);
   }
+
+	selectGroup(){
+
+	}
 }

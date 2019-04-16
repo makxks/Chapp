@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ContactService } from '../contact.service';
+import { ProfileService } from '../../../profile/profile.service';
 
 import { User } from '../../../auth/user.model';
 
@@ -11,9 +12,10 @@ import { User } from '../../../auth/user.model';
 })
 
 export class RemoveContactComponent implements OnInit {
+	user: User;
   display = 'none';
 
-  constructor(private contactService: ContactService) {
+  constructor(private contactService: ContactService, private profileService: ProfileService) {
   }
 
   modalCancelled() {
@@ -21,12 +23,9 @@ export class RemoveContactComponent implements OnInit {
 	}
 
   onRemoveContactAccepted(user: User) {
-    /*this.contactService.createGroup(chat)
-      .subscribe(
-        (result: any) => {
-					console.log(result);
-				});
-		this.display = 'none';*/
+		var users = { remove: user, sender: this.profileService.currentUser };
+    this.contactService.emitRemoveContact(users);
+		this.modalCancelled();
 	}
 
 	ngOnInit(){
@@ -34,6 +33,7 @@ export class RemoveContactComponent implements OnInit {
       .subscribe(
 				(result: any) => {
 					this.display = 'block';
+					this.user = result;
 				});
 	}
 }

@@ -5,6 +5,8 @@ import { Notification } from './notification.model';
 
 import { ContactService } from '../layout/contact-list/contact.service';
 
+import { Chat } from '../chat/chat.model';
+
 @Component ({
 	selector: 'notification-component',
 	templateUrl: './notification.component.html',
@@ -13,6 +15,7 @@ import { ContactService } from '../layout/contact-list/contact.service';
 
 export class NotificationComponent {
   @Input() notification: Notification;
+	@Input() chat: Chat = null;
 
   constructor(private notificationService: NotificationService, private contactService: ContactService){}
 }

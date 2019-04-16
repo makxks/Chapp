@@ -25,7 +25,7 @@ export class ContactListComponent {
 		this.contactService.handleAddContact();
 	}
 
-	addGroup([]: User[]){
-
+	addGroup(){
+		this.contactService.handleAddGroup();
 	}
 }

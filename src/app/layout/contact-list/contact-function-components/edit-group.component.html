@@ -1,0 +1,42 @@
+<div class="backdrop" [ngStyle] = "{'display': display}"></div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle] = "{'display': display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="modalCancelled()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit {{this.chat.name}}</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <form id="edit-group-form" [formGroup]="editGroupForm" (ngSubmit)="editGroupSubmitted()">
+            <!-- Add form here -->
+            <div class="form-group formInput">
+              <label for="username">Edit The Group Name</label>
+              <input formControlName="groupname" type="text" id="edit-group-name" #groupname class="form-control">
+              <!-- <span>Invalid group name</span> -->
+            </div>
+
+            <div class="form-group">
+              <p><b>Current Group Members</b></p>
+              <p *ngFor="let user of this.chat.users"> {{user.name}} </p>
+            </div>
+            <div class="form-group new-group-users" *ngIf="this.possibleNewUsers.length>0">
+              <label for="users">Add Users To The Group</label>
+              <div class="form-control user-list-for-group">
+                <div [ngClass]="{'selected-user':this.checkIfUserIsSelected(user)}"
+                *ngFor="let user of this.possibleNewUsers"
+                value=user (click)="updateCheckedUsers(user)">{{user.name}}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <p><b>Selected Users</b></p>
+              <p *ngFor="let user of this.selectedUsers"> {{user.name}} </p>
+            </div>
+            <button type="submit" class="btn btn-primary">Edit Group</button>
+          </form>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

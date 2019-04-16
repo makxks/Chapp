@@ -48,6 +48,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     }*/
   }
 
+  showGroupDetails(group: Chat){
+    this.chatService.showGroupDetailsOccurred.emit(group);
+  }
+
   ngOnInit() {
     for(var i=0; i<this.chat.users.length; i++){
       this.users.push(this.chat.users[i].name);

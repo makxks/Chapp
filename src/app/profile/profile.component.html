@@ -1,31 +1,40 @@
 <section class="profile-container">
   <h1>Your Profile</h1>
 
-  <h2 class="name">Name</h2>
+  <h3 class="name">Name</h3>
+  <h2 *ngIf="this.profileService.currentUser">{{this.profileService.currentUser.name}}</h2>
   <!-- display logged in users name -->
 
-  <h2>Email</h2>
+  <h3>Email</h3>
+  <h2 *ngIf="this.profileService.currentUser">{{this.profileService.currentUser.email}}</h2>
   <!-- display logged in users registered email -->
 
   <section class="contacts-and-groups">
     <section class="contacts">
-      <h2>Contacts</h2>
+      <h3>Contacts</h3>
       <!-- display a scrollable list of contacts -->
-      <section class="contact-list">
-
+      <section class="user-contacts">
+        <section class="user-contact-details" *ngFor="let user of this.contactService.contactUsers">
+          <p>{{user.name}}</p>
+          <p>{{user.email}}</p>
+          <button class="btn btn-danger" (click)="this.contactService.handleRemove(user)">Remove Contact</button>
+        </section>
       </section>
     </section>
 
     <section class="groups">
-      <h2>Groups</h2>
+      <h3>Groups</h3>
       <!-- display a scrollable list of this users groups -->
       <section class="group-list">
-
+        <section class="user-group-details" *ngFor="let group of this.contactService.contactGroups">
+          <p>{{group}}</p>
+          <button class="btn btn-danger" (click)="this.contactService.handleLeaveGroup(group)">Leave Group</button>
+        </section>
       </section>
     </section>
   </section>
 
-  <h2>Current Tasks</h2>
+  <h3>Current Tasks</h3>
   <!-- display a scrollable list of this users assigned tasks, importances of each and due dates for each -->
   <section class="task-list">
 

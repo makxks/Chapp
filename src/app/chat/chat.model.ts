@@ -8,15 +8,19 @@ export class Chat {
   users: User[];
   messages: Message[];
   todos: Todo[];
+  isGroup: boolean;
 
   constructor(
     name: string,
     owner: User,
-    users: User[]) {
+    users: User[],
+    isGroup: boolean,
+    todos: Todo[]) {
       this.name = name;
       this.owner = owner;
       this.users = users;
       this.messages = [];
-      this.todos = [];
+      this.todos = todos;
+      this.isGroup = isGroup;
     }
 }

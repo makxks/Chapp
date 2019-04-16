@@ -1,0 +1,35 @@
+<div class="backdrop" [ngStyle] = "{'display': display}"></div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle] = "{'display': display}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="modalCancelled()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Create A New Group</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <form id="create-group-form" [formGroup]="createGroupForm" (ngSubmit)="createNewGroupSubmitted()">
+            <!-- Add form here -->
+            <div class="form-group formInput">
+              <label for="username">Group Name</label>
+              <input formControlName="groupname" type="text" id="new-group-name" #groupname class="form-control">
+              <!-- <span>Invalid group name</span> -->
+            </div>
+            <div class="form-group new-group-users">
+              <label for="users">Add Users To The Group</label>
+              <div class="form-control user-list-for-group">
+                <div [ngClass]="{'selected-user':selectedUsernames.includes(user.name)}" *ngFor="let user of this.contactService.contactUsers" value=user (click)="updateCheckedUsers(user)">{{user.name}}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <p><b>Selected Users</b></p>
+              <p class="new-users" *ngFor="let name of this.selectedUsernames"> {{name}} </p>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Group</button>
+          </form>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -33,7 +33,7 @@ export class AddContactComponent implements OnInit {
 		//if not report error
 		const newContact = new User(
 			this.addContactForm.value.username,
-			'someemail' + this.addContactForm.value.username,
+			this.addContactForm.value.email,
 			[],
 			[],
 			[]
@@ -41,6 +41,8 @@ export class AddContactComponent implements OnInit {
 		//newContact.contactNames.push(this.profileService.currentUser.name);
     this.notificationService.addNewContact(newContact);
 		this.display = 'none';
+
+		this.addContactForm.reset();
 	}
 
 	ngOnInit(){
@@ -51,7 +53,8 @@ export class AddContactComponent implements OnInit {
 				});
 
 		this.addContactForm = this.fb.group({
-			username: ['', Validators.required]
+			username: ['', Validators.required],
+			email: ['', Validators.required]
 		})
 	}
 }

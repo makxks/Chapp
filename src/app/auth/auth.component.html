@@ -5,12 +5,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="modalCancelled()"><span aria-hidden="true">&times;</span></button>
-        <button id="signupButton" *ngIf="displayType!='signup'" (click)="displayTypeChange('signup')" class="modal-title">Signup</button>
-        <button id="loginButton" *ngIf="displayType!='login'" (click)="displayTypeChange('login')" class="modal-title">Login</button>
-        <button id="logoutButton" *ngIf="displayType!='logout'" (click)="displayTypeChange('logout')" class="modal-title">Logout</button>
+        <button id="signupButton" class="btn btn-primary" *ngIf="displayType!='signup'" (click)="displayTypeChange('signup')">Signup</button>
+        <button id="loginButton" class="btn btn-primary" *ngIf="displayType!='login'" (click)="displayTypeChange('login')">Login</button>
+        <button id="logoutButton" class="btn btn-primary" *ngIf="displayType!='logout'" (click)="displayTypeChange('logout')">Logout</button>
       </div>
 
-      <div>
+      <div class="modal-title">
         <h3 *ngIf="displayType=='signup'">Signup</h3>
         <h3 *ngIf="displayType=='login'">Login</h3>
         <h3 *ngIf="displayType=='logout'">Logout</h3>
@@ -58,17 +58,13 @@
         </form>
 
         <div *ngIf="displayType=='logout'">
-          <button (click)="logout()"></button>
+          <button class="btn btn-danger" (click)="logout()">Logout</button>
         </div>
 
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="displayTypeChange('signup')">Signup</button>
-        <button type="button" class="btn btn-danger" (click)="displayTypeChange('login')">Login</button>
-        <button type="button" class="btn btn-danger" (click)="displayTypeChange('logout')">Logout</button>
 
-        <button type="button" class="btn btn-default" (click)="modalCancelled()">Cancel</button>
       </div>
 
     </div><!-- /.modal-content -->

@@ -1,8 +1,9 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 
 import { User } from '../auth/user.model';
+import { Chat } from '../chat/chat.model';
 
 @Injectable()
 export class ProfileService {

@@ -1,6 +1,6 @@
 <div>
-  <button class="tab-button" (click)="changeGroup()">
-    <h4>{{name}}</h4>
+  <button class="tab-button" [ngClass]="{'selectedTab':this.chatService.selectedGroup==this.name}" (click)="changeGroup()">
+    <h4>{{displayName}}</h4>
     <span class="new-message-count" *ngIf="chatService.newMessageMap.get(name)>0">{{chatService.newMessageMap.get(name)}}</span>
     <i class="glyphicon glyphicon-remove-sign tab-close-button" (click)="closeTab()"></i>
   </button>

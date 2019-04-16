@@ -21,5 +21,6 @@
    <div class="message-input-box">
      <textarea class="message-input" [(ngModel)]="message" (window:keydown)="sendMessageByKey($event)"></textarea>
      <button class="message-button" (click)="sendMessage()">Send Message</button>
+     <button *ngIf="this.chat.isGroup" class="group-button" (click)="showGroupDetails(this.chat)">Group Details</button>
    </div>
  </div>

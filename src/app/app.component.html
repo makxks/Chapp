@@ -4,9 +4,9 @@
   <header-component *ngIf="authService.userIsLoggedIn"></header-component>
 
   <div>
-    <button (click)="this.profileService.setManualUser('Max'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall()">Max</button>
-    <button (click)="this.profileService.setManualUser('Tom'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall()">Tom</button>
-    <button (click)="this.profileService.setManualUser('Lucie'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall()">Lucie</button>
+    <button (click)="this.profileService.setManualUser('Max'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall()">Max</button>
+    <button (click)="this.profileService.setManualUser('Tom'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall()">Tom</button>
+    <button (click)="this.profileService.setManualUser('Lucie'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall()">Lucie</button>
   </div>
 
   <section class="second-section" *ngIf="authService.userIsLoggedIn && !profileService.showing && !notificationService.showing">
@@ -18,7 +18,7 @@
       <section class="group-content">
         <chat-container-component class="chat-container"></chat-container-component>
         <aside class="todos">
-          <todo-container-component></todo-container-component>
+          <todo-list-component></todo-list-component>
         </aside>
       </section>
     </section>

@@ -21,12 +21,8 @@ export class DeleteTodoComponent implements OnInit {
 	}
 
   ondeleteTodoAccepted(todo: Todo) {
-    /*this.todoService.createGroup(todo)
-      .subscribe(
-        (result: any) => {
-					console.log(result);
-				});
-		this.display = 'none';*/
+    this.todoService.removeTodo(todo);
+		this.display = 'none';
 	}
 
 	ngOnInit(){

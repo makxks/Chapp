@@ -7,7 +7,7 @@ export class Notification {
   chat: Chat;
   isGroup: boolean;
   groupName: string;
-  timeSent: Date;
+  timeSent: number;
 
   constructor(
     sender: User,
@@ -20,6 +20,6 @@ export class Notification {
       this.chat = chat;
       this.isGroup = isGroup;
       this.groupName = groupName;
-      this.timeSent = new Date;
+      this.timeSent = new Date().getTime();
     }
 }

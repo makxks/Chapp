@@ -8,64 +8,63 @@
         <h4 class="modal-title">Create a new task</h4>
       </div>
       <div class="modal-body">
-        <form>
+        <!-- Add form here -->
+        <form id="create-todo-form" [formGroup]="createTodoForm" (ngSubmit)="this.onCreateTodoSubmitted()">
           <!-- Add form here -->
-          <form id="create-todo-form" [formGroup]="createTodoForm" (ngSubmit)="onCreateTodoSubmitted()">
-            <!-- Add form here -->
-            <div class="form-group formInput">
-              <label for="name">Task Name</label>
-              <input formControlName="name" type="text" id="new-todo-name" #name class="form-control">
-              <!-- <span>Invalid group name</span> -->
+          <div class="form-group formInput">
+            <label for="name">Task Name</label>
+            <input formControlName="name" type="text" id="new-todo-name" #name class="form-control">
+            <!-- <span>Invalid group name</span> -->
+          </div>
+          <div class="form-group new-todo-user">
+            <label for="users">Users Task Is Assigned To</label>
+            <div class="form-control user-list-for-todo">
+              <div class="possible-user" [ngClass]="{'selected-user':selectedUsernames.includes(user.name)}" *ngFor="let user of this.contactService.contactUsers" value=users (click)="updateCheckedUsers(user)">{{user.name}}</div>
             </div>
-            <div class="form-group new-todo-user">
-              <label for="users">Users Task Is Assigned To</label>
-              <div class="form-control user-list-for-todo">
-                <div class="possible-user" [ngClass]="{'selected-user':selectedUsernames.includes(user.name)}" *ngFor="let user of this.contactService.contactUsers" value=user (click)="updateCheckedUsers(user)">{{user.name}}</div>
-              </div>
-            </div>
-            <div class="form-group">
-              <p><b>Assigned Users</b></p>
-              <p class="new-users" *ngFor="let name of this.selectedUsernames"> {{name}} </p>
-            </div>
-            <div class="form-group">
-              <label for="importance">Importance</label>
-              <select class="form-control" formControlName="importance" #importance>
-                <option value="">Select Importance</option>
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
+          </div>
+          <div class="form-group">
+            <p><b>Assigned Users</b></p>
+            <p class="new-users" *ngFor="let name of this.selectedUsernames"> {{name}} </p>
+          </div>
+          <div class="form-group">
+            <label for="importance">Importance</label>
+            <select class="form-control" formControlName="importance" #importance>
+              <option value="">Select Importance</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+
+          <div class="form-group formInput">
+            <label for="name">Due Date</label>
+            <div class="select-time-group">
+              <select class="form-control" formControlName="day" #day>
+                <option value="">Select Day</option>
+                <option value="1">1</option>
+              </select>
+
+              <select class="form-control" formControlName="month" #month>
+                <option value="">Select Month</option>
+                <option value="1">January</option>
+              </select>
+
+              <select class="form-control" formControlName="year" #year>
+                <option value="">Select Year</option>
+                <option value="2019">2019</option>
               </select>
             </div>
+            <!--<input formControlName="name" type="text" id="new-todo-name" #due class="form-control">__>
+            <!-- <span>Invalid group name</span> -->
+          </div>
 
-            <div class="form-group formInput">
-              <label for="name">Due Date</label>
-              <div class="select-time-group">
-                <select class="form-control" formControlName="day" #day>
-                  <option value="">Select Day</option>
-                  <option value="1">1</option>
-                </select>
-
-                <select class="form-control" formControlName="month" #month>
-                  <option value="">Select Month</option>
-                  <option value="1">January</option>
-                </select>
-
-                <select class="form-control" formControlName="year" #year>
-                  <option value="">Select Year</option>
-                  <option value="2019">2019</option>
-                </select>
-              </div>
-              <!--<input formControlName="name" type="text" id="new-todo-name" #due class="form-control">__>
-              <!-- <span>Invalid group name</span> -->
-            </div>
-
-            <div class="form-group formInput">
-              <label for="details">Other Details</label>
-              <input formControlName="details" type="text" id="new-todo-details" #details class="form-control">
-              <!-- <span>Invalid group name</span> -->
-            </div>
-            <button type="submit" class="btn btn-danger">Create New Task</button>
-            <button type="button" class="btn btn-default" (click)="modalCancelled()">Cancel</button>
+          <div class="form-group formInput">
+            <label for="details">Other Details</label>
+            <input formControlName="details" type="text" id="new-todo-details" #details class="form-control">
+            <!-- <span>Invalid group name</span> -->
+          </div>
+          <button type="submit" class="btn btn-primary">Create New Task</button>
+          <button type="button" class="btn btn-default" (click)="modalCancelled()">Cancel</button>
         </form>
       </div>
     </div><!-- /.modal-content -->

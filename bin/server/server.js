@@ -28,5 +28,13 @@ module.exports = function(io) {
     socket.on('remove-contact', (users) => {
       io.emit('remove-contact-from-list', users);
     });
+
+    socket.on('add-todo', (todo) => {
+      io.emit('todo-added', todo);
+    })
+
+    socket.on('delete-todo', (todo) => {
+      io.emit('todo-deleted', todo);
+    })
   })
 }

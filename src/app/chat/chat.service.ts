@@ -181,4 +181,13 @@ export class ChatService {
   handleDelete(chat: Chat){
     this.deleteGroupOccurred.emit(chat);
   }
+
+  getSelectedChat(){
+    for(var i=0; i<this.tabs.length; i++){
+      if(this.tabs[i].name == this.selectedGroup){
+        return this.tabs[i];
+      }
+    }
+    return new Chat("", null, [], false, []);
+  }
 }

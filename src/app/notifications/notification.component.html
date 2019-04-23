@@ -6,7 +6,7 @@
   </section>
   <section class="notification-details">
     <p class="detail">{{this.notification.sender.name}}</p>
-    <p class="detail">{{this.notification.timeSent}}</p>
+    <p class="detail">{{this.hours}}:{{this.minutes}} {{this.date}}/{{this.month}}/{{this.year}}</p>
     <section class="button-group">
       <button class="btn btn-primary" (click)="this.contactService.emitAccept(this.notification); this.notificationService.agreeToNotification(this.notification)">Accept</button>
       <button class="btn btn-danger" (click)="this.notificationService.clearNotification(this.notification)">Decline</button>
@@ -24,7 +24,7 @@
   <section class="notification-details">
     <p class="detail-for-group">{{this.notification.sender.name}}</p>
     <p class="detail-for-group">{{this.notification.groupName}}</p>
-    <p class="detail-for-group">{{this.notification.timeSent}}</p>
+    <p class="detail-for-group">{{this.hours}}:{{this.minutes}} {{this.date}}/{{this.month}}/{{this.year}}</p>
     <section class="button-group-for-group">
       <button class="btn btn-primary"(click)="this.contactService.emitGroupAccept(this.notification); this.notificationService.agreeToGroupNotification(this.notification)">Accept</button>
       <button class="btn btn-danger" (click)="this.notificationService.clearNotification(this.notification)">Decline</button>

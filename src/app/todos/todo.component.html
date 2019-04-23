@@ -1,13 +1,14 @@
 <section class="todo-container">
   <section class="todo">
-    <h3 class="todo-name">{{todo.name}}</h3>
+    <p class="todo-name"><b>{{todo.name}}</b></p>
+    <p class="todo-importance" [ngClass]="todo.importance">{{todo.importance}}</p>
     <p class="todo-description">{{todo.description}}</p>
-    <p class="todo-user">{{todo.user}}</p>
-    <p class="todo-deadline">{{todo.deadline}}</p>
-    <p>Only show edit button and delete button if user is owner</p>
+    <p class="todo-users" *ngFor="let user of todo.users">{{user.name}}</p>
+    <p class="todo-deadline">Due: {{this.date}}/{{this.month}}/{{this.year}}</p>
     <section class="todo-buttons">
-      <button class="edit-todo-button" (click)="this.todoService.handleEdit()">Edit</button>
-      <button class="delete-todo-button" (click)="this.todoService.handleRemove()">Delete</button>
+      <button class="complete-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name || this.checkUser()" (click)="this.todoService.completeTodo()">Complete</button>
+      <button class="edit-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleEdit()">Edit</button>
+      <button class="delete-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleRemove()">Delete</button>
     </section>
   </section>
 </section>

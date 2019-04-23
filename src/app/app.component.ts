@@ -5,6 +5,7 @@ import { AuthService } from './auth/auth.service';
 import { ChatService } from './chat/chat.service';
 import { NotificationService } from './notifications/notification.service';
 import { ContactService } from './layout/contact-list/contact.service';
+import { TodoService } from './todos/todo.service';
 
 @Component ({
 	selector: 'my-app',
@@ -17,6 +18,7 @@ export class AppComponent {
 		private profileService: ProfileService,
 		private authService: AuthService,
 		private chatService: ChatService,
-		private notificationService: NotificationService, 
-		private contactService: ContactService){}
+		private notificationService: NotificationService,
+		private contactService: ContactService,
+		private todoService: TodoService){}
 }

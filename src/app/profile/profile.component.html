@@ -37,7 +37,12 @@
   <h3>Current Tasks</h3>
   <!-- display a scrollable list of this users assigned tasks, importances of each and due dates for each -->
   <section class="task-list">
-
+    <section class="todo-details" *ngFor="let todo of this.profileService.currentUser.todos">
+      <p>{{todo.name}}</p>
+      <p>{{todo.importance}}</p>
+      <p>{{setTodoDay(todo)}}/{{setTodoMonth(todo)}}/{{setTodoYear(todo)}}</p>
+      <p>{{todo.chat.name}}</p>
+    </section>
   </section>
 
 </section>

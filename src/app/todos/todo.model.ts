@@ -1,32 +1,36 @@
 import { User } from "../auth/user.model";
+import { Chat } from '../chat/chat.model';
 
 export class Todo {
   name: string;
   description: string;
-  user: string;
-  deadline: string;
-  chat: string;
+  users: User[];
+  deadline: number;
+  chat: Chat;
   subTodo: boolean;
-  parentTodo: string;
+  parentTodo: Todo;
   owner: User;
+  importance: string
 
   constructor(
     name: string,
     description: string,
-    user: string,
-    deadline: string,
-    chat: string,
+    users: User[],
+    deadline: number,
+    chat: Chat,
     subTodo: boolean,
-    parentTodo: string,
-    owner: User
+    parentTodo: Todo,
+    owner: User,
+    importance: string
   ){
     this.name = name;
     this.description = description;
-    this.user = user;
+    this.users = users;
     this.deadline = deadline;
     this.chat = chat;
     this.subTodo = subTodo;
     this.parentTodo = parentTodo;
     this.owner = owner;
+    this.importance = importance;
   }
 }

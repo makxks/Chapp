@@ -23,7 +23,6 @@ import { EditGroupComponent } from './layout/contact-list/contact-function-compo
 import { GroupDetailsComponent } from './layout/contact-list/contact-function-components/group-details.component';
 import { LeaveGroupComponent } from './layout/contact-list/contact-function-components/leave-group.component';
 
-import { TodoContainerComponent } from './todos/todo-container.component';
 import { TodoListComponent } from './todos/todo-list.component';
 import { TodoComponent } from './todos/todo.component';
 import { CreateTodoComponent } from './todos/todo-function-components/create-todo.component';
@@ -62,7 +61,6 @@ import { routing } from './app.routing';
 		EditGroupComponent,
 		GroupDetailsComponent,
 		LeaveGroupComponent,
-		TodoContainerComponent,
 		TodoListComponent,
 		TodoComponent,
 		CreateTodoComponent,

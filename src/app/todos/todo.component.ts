@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { TodoService } from './todo.service';
+import { ProfileService } from '../profile/profile.service';
 
 import { Todo } from './todo.model';
 import { User } from '../auth/user.model';
@@ -11,10 +11,27 @@ import { User } from '../auth/user.model';
 	styleUrls: [String('./todo.component.sass')]
 })
 
-export class TodoComponent {
-	@Input() todo: Todo = new Todo('Max', 'Test', 'Max', 'Now', 'group1', false, '', new User('max', 'an@email.email', [], [], []));
+export class TodoComponent implements OnInit {
+	@Input() todo: Todo;
 
-	constructor(private todoService: TodoService){
-		
-	};
+	constructor(private profileService: ProfileService){}
+
+	year: any;
+	month: any;
+	date: any;
+
+	ngOnInit(){
+		this.year = new Date(this.todo.deadline).getFullYear();
+		this.month = new Date(this.todo.deadline).getMonth();
+		this.date = new Date(this.todo.deadline).getDate();
+	}
+
+	checkUser(){
+		for(var i=0; i<this.todo.users.length;i++){
+			if(this.profileService.currentUser == this.todo.users[i]){
+				return true;
+			}
+		}
+		return false;
+	}
 }

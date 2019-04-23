@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { TodoService } from '../todo.service';
+import { ContactService } from '../../layout/contact-list/contact.service';
 
 import { Todo } from '../todo.model';
 import { Chat } from '../../chat/chat.model';
@@ -22,29 +23,46 @@ export class CreateTodoComponent implements OnInit {
 	users: User[] = [];
 	selectedUsernames: string[] = [];
 
-  constructor(private todoService: TodoService, private fb: FormBuilder) {
+  constructor(private todoService: TodoService, private fb: FormBuilder, private contactService: ContactService) {
   }
 
   modalCancelled() {
 		this.display = 'none';
 	}
 
-  onCreateTodoSubmmitted() {
+  onCreateTodoSubmitted(isSubTodo: boolean, parentTodo: Todo) {
+		var submittedTodo: Todo = new Todo(
+			this.createTodoForm.value.name,
+			this.createTodoForm.value.details,
+			this.users,
+			//create a Date
+			new Date().getTime(),
+			this.chat,
+			isSubTodo,
+			parentTodo,
+			this.chat.owner,
+			this.createTodoForm.value.importance
+		)
+
+		this.todoService.addNewTodo(submittedTodo);
+
 		this.display = 'none';
+		this.createTodoForm.reset();
 	}
 
 	ngOnInit(){
-		//get chat!!!
     this.todoService.createTodoOccurred
       .subscribe(
 				(result: any) => {
 					this.display = 'block';
-					//this.chat = .....
+					this.chat = result;
 				});
+
+		//createSubTodoOccurred
 
 		this.createTodoForm = this.fb.group({
 			name: ['', Validators.required],
-			user: ['', Validators.required],
+			users: [[], Validators.required],
 			details: [''],
 			importance: [''],
 			day: [''],

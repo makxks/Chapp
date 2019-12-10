@@ -37,11 +37,23 @@
   <h3>Current Tasks</h3>
   <!-- display a scrollable list of this users assigned tasks, importances of each and due dates for each -->
   <section class="task-list">
-    <section class="todo-details" *ngFor="let todo of this.profileService.currentUser.todos">
-      <p>{{todo.name}}</p>
-      <p>{{todo.importance}}</p>
-      <p>{{setTodoDay(todo)}}/{{setTodoMonth(todo)}}/{{setTodoYear(todo)}}</p>
-      <p>{{todo.chat.name}}</p>
+    <section class="todo" *ngFor="let todo of this.profileService.currentUser.todos">
+      <section class="todo-details">
+        <p>{{todo.name}}</p>
+        <p>{{todo.importance}}</p>
+        <p>{{setTodoDay(todo)}}/{{setTodoMonth(todo)}}/{{setTodoYear(todo)}}</p>
+        <p>{{todo.chat.name}}</p>
+
+        <p class="sub-todos-title" *ngIf="!subTasksShowing">Show subtasks
+          <i class="glyphicon glyphicon-chevron-right subtask-button" (click)="toggleSubtasks()"></i>
+        </p>
+        <p class="sub-todos-title" *ngIf="subTasksShowing">Hide subtasks
+          <i class="glyphicon glyphicon-chevron-down subtask-button" (click)="toggleSubtasks()"></i>
+        </p>
+      </section>
+      <section class="sub-todo" *ngFor="let subtodo of todo.subTodos">
+
+      </section>
     </section>
   </section>
 

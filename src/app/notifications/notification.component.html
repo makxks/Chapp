@@ -1,4 +1,4 @@
-<section class="notification" *ngIf="!this.notification.isGroup">
+<section class="notification" *ngIf="!this.notification.isGroup && !this.notification.isTask">
   <section class="notification-details">
     <p class="detail"><b>Sender</b></p>
     <p class="detail"><b>Time of request</b></p>
@@ -14,7 +14,7 @@
   </section>
 </section>
 
-<section class="notification" *ngIf="this.notification.isGroup">
+<section class="notification" *ngIf="this.notification.isGroup && !this.notification.isTask">
   <section class="notification-details">
     <p class="detail-for-group"><b>Sender</b></p>
     <p class="detail-for-group"><b>Group Name</b></p>
@@ -28,6 +28,25 @@
     <section class="button-group-for-group">
       <button class="btn btn-primary"(click)="this.contactService.emitGroupAccept(this.notification); this.notificationService.agreeToGroupNotification(this.notification)">Accept</button>
       <button class="btn btn-danger" (click)="this.notificationService.clearNotification(this.notification)">Decline</button>
+    </section>
+  </section>
+</section>
+
+<section class="notification" *ngIf="this.notification.isTask">
+  <section class="notification-details">
+    <p class="detail-for-todo"><b>Task Name</b></p>
+    <p class="detail-for-todo"><b>Sender</b></p>
+    <p class="detail-for-todo"><b>Group Name</b></p>
+    <p class="detail-for-todo"><b>Time of request</b></p>
+    <div class="detail-buffer-for-todo"> </div>
+  </section>
+  <section class="notification-details">
+    <p class="detail-for-todo">{{this.notification.task.name}}
+    <p class="detail-for-todo">{{this.notification.sender.name}}</p>
+    <p class="detail-for-todo">{{this.notification.groupName}}</p>
+    <p class="detail-for-todo">{{this.hours}}:{{this.minutes}} {{this.date}}/{{this.month}}/{{this.year}}</p>
+    <section class="button-group-for-todo">
+      <button class="btn btn-primary button-for-todo"(click)=" this.notificationService.deleteTaskNotification(this.notification)">Delete Notification</button>
     </section>
   </section>
 </section>

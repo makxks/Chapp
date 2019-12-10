@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ChatService } from './chat.service';
 import { ProfileService } from '../profile/profile.service';
+import { TodoService } from '../todos/todo.service';
 
 import { Message } from './message.model';
 import { User } from '../auth/user.model';
@@ -23,7 +24,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   message: string = '';
   selected: boolean = false;
 
-  constructor(private chatService: ChatService, private route: ActivatedRoute, private profileService: ProfileService) {
+  constructor(private chatService: ChatService, private route: ActivatedRoute, private profileService: ProfileService, private todoService: TodoService) {
   }
 
   sendMessage() {
@@ -39,7 +40,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.message = '';
   }
 
-  sendMessageByKey(/*$event*/) {
+  sendMessageByKey(event) {
     /*if(event.keyCode==13){
       if(event.shiftKey){
         this.sendMessage();
@@ -59,6 +60,9 @@ export class ChatComponent implements OnInit, OnDestroy {
     if(this.users.includes(this.profileService.currentUser.name)){
       this.chatService.connect(this.chat.name);
       this.messages = [];
+
+      //this.messages = this.chatService.getMessagesOnLogin(this.chat, this.profileService.currentUser);
+      //this.todoService.getTodosOnLogin(this.chat, this.profileService.currentUser);
 
       this.connection = this.chatService.getMessages(this.chat.name).subscribe((message: Message) => {
         let newMessage = new Message(message.text, message.time, message.user, message.chat);

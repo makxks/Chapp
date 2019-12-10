@@ -18,6 +18,7 @@ import { User } from '../../auth/user.model';
 export class CreateTodoComponent implements OnInit {
 	chat: Chat = new Chat('', null, [], false, []);
 	parentTodo: Todo = null;
+	isSubTodo: boolean = false;
   display = 'none';
 	createTodoForm: FormGroup;
 	users: User[] = [];
@@ -30,22 +31,25 @@ export class CreateTodoComponent implements OnInit {
 		this.display = 'none';
 	}
 
-  onCreateTodoSubmitted(isSubTodo: boolean, parentTodo: Todo) {
+  onCreateTodoSubmitted() {
 		var submittedTodo: Todo = new Todo(
 			this.createTodoForm.value.name,
 			this.createTodoForm.value.details,
 			this.users,
 			//create a Date
-			new Date().getTime(),
+			new Date(this.createTodoForm.value.year, this.createTodoForm.value.month, this.createTodoForm.value.day).getTime(),
 			this.chat,
-			isSubTodo,
-			parentTodo,
+			this.isSubTodo,
+			this.parentTodo,
 			this.chat.owner,
 			this.createTodoForm.value.importance
 		)
-
-		this.todoService.addNewTodo(submittedTodo);
-
+		if(!this.isSubTodo){
+			this.todoService.addNewTodo(submittedTodo);
+		}
+		else if(this.isSubTodo){
+			this.todoService.addSubTodo(submittedTodo);
+		}
 		this.display = 'none';
 		this.createTodoForm.reset();
 	}
@@ -56,9 +60,23 @@ export class CreateTodoComponent implements OnInit {
 				(result: any) => {
 					this.display = 'block';
 					this.chat = result;
+					this.isSubTodo = false;
+					this.users = [];
+					this.selectedUsernames = [];
 				});
 
 		//createSubTodoOccurred
+		this.todoService.createSubTodoOccurred
+			.subscribe(
+				(result: any) => {
+					this.display = 'block';
+					this.parentTodo = result;
+					this.chat = result.chat;
+					this.isSubTodo = true;
+					this.users = [];
+					this.selectedUsernames = [];
+				}
+			)
 
 		this.createTodoForm = this.fb.group({
 			name: ['', Validators.required],

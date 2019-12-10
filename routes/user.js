@@ -4,7 +4,6 @@ var router = express.Router();
 var User = require('../models/user');
 
 router.post('/', function (req, res, next) {
-  console.log(req.body.email);
   var user = new User({
     email: req.body.email,
     username: req.body.name,
@@ -26,5 +25,32 @@ router.post('/', function (req, res, next) {
     })
   });
 });
+
+router.get('/', function (req, res, next) {
+  User.findOne({
+    "email": req.body.email
+  }), function(err, user){
+    if(err){
+      return res.status(500).json({
+        title: 'An error occurred',
+        error: err
+      });
+    }
+
+    if(user){
+      res.status(200).json({
+        message: 'Success',
+        obj: user
+      })
+    }
+
+    else{
+      res.status(404).json({
+        message: 'Not found'
+      })
+    }
+
+  }
+})
 
 module.exports = router;

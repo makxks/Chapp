@@ -3,10 +3,16 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
+import { Http } from '@angular/http';
+import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+
 import { ProfileService } from '../profile/profile.service';
 
+import { User } from '../auth/user.model';
 import { Message } from './message.model';
 import { Chat } from './chat.model';
+
+var currentBEaddress = "http://localhost:3000";
 
 @Injectable()
 export class ChatService {
@@ -25,12 +31,12 @@ export class ChatService {
   deleteGroupOccurred = new EventEmitter<Chat>();
   showGroupDetailsOccurred = new EventEmitter<Chat>();
 
-  constructor(private profileService: ProfileService){}
+  constructor(private http: Http, private profileService: ProfileService){}
 
   connectToOverall(){
     this.socket.on('created-chat-room', (chat) => {
       for(var i=0; i<chat.users.length; i++){
-        if(chat.users[i].name == this.profileService.currentUser.name){
+        if(chat.users[i].email == this.profileService.currentUser.email){
           if(!this.profileService.currentUser.chatNames.includes(chat.name)){
             this.profileService.currentUser.chatNames.push(chat.name);
             this.tabs.push(chat);
@@ -189,5 +195,51 @@ export class ChatService {
       }
     }
     return new Chat("", null, [], false, []);
+  }
+
+  getChatsOnLogin(user:User){
+    let params = '';
+    let options = new RequestOptions({
+      search: new URLSearchParams('email='+user.email)
+    })
+    const url = currentBEaddress + '/chat';
+    this.http.get(url, options)
+    .map((response: Response) => {
+      this.tabs = response.json().obj;
+      for(var i=0; i<this.tabs.length; i++){
+        this.profileService.currentUser.chatNames.push(this.tabs[i].name);
+        this.selectContact(this.tabs[i].name, this.tabs[i].isGroup);
+        this.openGroups.push(this.tabs[i].name);
+      }
+
+      // set to open groups, to tabs or to both //*should work
+    })
+  }
+
+  getMessagesOnLogin(chat:Chat, user:User){
+    var transformedMessages: Message[];
+    let params = '';
+    let options = new RequestOptions({
+      search: new URLSearchParams('email=' + user.name +'/chatName=' + chat.name + '/owner=' + chat.owner.name)
+    });
+    const url = currentBEaddress + '/message';
+    this.http.get(url, options)
+    .map((response: Response) => {
+      var messages = response.json().obj;
+
+      for(var i=0; i<messages.length; i++){
+        var newMessage = new Message(
+          messages[i].text,
+          messages[i].time,
+          messages[i].user,
+          messages[i].chat.name
+        )
+        transformedMessages.push(newMessage);
+        //sort by time
+        transformedMessages = transformedMessages.sort(function (a, b) { return a.time - b.time });
+        //add targetted user //*later
+      }
+    })
+    return transformedMessages;
   }
 }

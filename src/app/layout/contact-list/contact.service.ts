@@ -3,6 +3,9 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
+import { Http } from '@angular/http';
+import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+
 import { User } from '../../auth/user.model';
 import { Chat } from '../../chat/chat.model';
 import { Notification } from '../../notifications/notification.model';
@@ -10,6 +13,8 @@ import { Notification } from '../../notifications/notification.model';
 import { ProfileService } from '../../profile/profile.service';
 import { NotificationService } from '../../notifications/notification.service';
 import { ChatService } from '../../chat/chat.service';
+
+var currentBEaddress = "http://localhost:3000";
 
 @Injectable()
 export class ContactService {
@@ -25,17 +30,17 @@ export class ContactService {
 
 	contactUsers: User[] = [];
 
-  constructor(private profileService: ProfileService, private chatService: ChatService, private notificationService: NotificationService){}
+  constructor(private http: Http, private profileService: ProfileService, private chatService: ChatService, private notificationService: NotificationService){}
 
   connectToOverall(){
     this.socket.on('received', (notification) => {
-      if(notification.receiver.name == this.profileService.currentUser.name || notification.sender.name == this.profileService.currentUser.name){
+      if(notification.receiver.email == this.profileService.currentUser.email || notification.sender.email == this.profileService.currentUser.email){
         this.acceptNotification(notification);
       }
     });
 
     this.socket.on('received-group', (notification) => {
-      if(notification.receiver.name == this.profileService.currentUser.name){
+      if(notification.receiver.email == this.profileService.currentUser.email){
         this.acceptGroupNotification(notification);
       }
 
@@ -50,9 +55,9 @@ export class ContactService {
     })
 
     this.socket.on('remove-contact-from-list', (users) => {
-      if(users.remove.name == this.profileService.currentUser.name){
+      if(users.remove.email == this.profileService.currentUser.email){
         for(var i=0; i<this.contactUsers.length; i++){
-          if(this.contactUsers[i].name == users.sender.name){
+          if(this.contactUsers[i].email == users.sender.email){
             this.contactUsers.splice(i,1);
           }
         }
@@ -73,9 +78,9 @@ export class ContactService {
           }
         }
       }
-      else if(users.sender.name == this.profileService.currentUser.name){
+      else if(users.sender.email == this.profileService.currentUser.email){
         for(var i=0; i<this.contactUsers.length; i++){
-          if(this.contactUsers[i].name == users.remove.name){
+          if(this.contactUsers[i].email == users.remove.email){
             this.contactUsers.splice(i,1);
           }
         }
@@ -193,5 +198,34 @@ export class ContactService {
 
   handleLeaveGroup(group: Chat){
     this.leaveGroupOccurred.emit(group);
+  }
+
+  getContactsOnLogin(user: User){
+    let params = '';
+    let options = new RequestOptions({
+      search: new URLSearchParams('email='+user.email)
+    })
+    const url = currentBEaddress + '/contact';
+    this.http.get(url, options)
+    .map((response: Response) => {
+      this.contactUsers = response.json().obj;
+    });
+  }
+
+  getGroupsOnLogin(user:User){
+    let params = '';
+    let options = new RequestOptions({
+      search: new URLSearchParams('email='+user.email)
+    })
+    const url = currentBEaddress + '/chat';
+    this.http.get(url, options)
+    .map((response: Response) => {
+      var chats = response.json().obj;
+      for(var i=0; i<chats.length; i++){
+        if(chats[i].isGroup){
+          this.contactGroups.push(chats[i].name);
+        }
+      }
+    });
   }
 }

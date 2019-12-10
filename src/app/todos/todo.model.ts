@@ -10,7 +10,9 @@ export class Todo {
   subTodo: boolean;
   parentTodo: Todo;
   owner: User;
-  importance: string
+  importance: string;
+  subTodos: Todo[];
+  complete: boolean
 
   constructor(
     name: string,
@@ -32,5 +34,6 @@ export class Todo {
     this.parentTodo = parentTodo;
     this.owner = owner;
     this.importance = importance;
+    this.subTodos = [];
   }
 }

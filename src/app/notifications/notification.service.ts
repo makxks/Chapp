@@ -3,12 +3,17 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
+import { Http } from '@angular/http';
+import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+
 import { Notification } from './notification.model';
 import { User } from '../auth/user.model';
 import { Chat } from '../chat/chat.model';
 
 import { ProfileService } from '../profile/profile.service';
 import { ChatService } from '../chat/chat.service';
+
+var currentBEaddress = "http://localhost:3000";
 
 @Injectable()
 export class NotificationService {
@@ -21,18 +26,24 @@ export class NotificationService {
 
   groupNotifications: Notification[] = [];
 
-  constructor(private profileService: ProfileService, private chatService: ChatService){}
+  constructor(private profileService: ProfileService, private chatService: ChatService, private http: Http){}
 
   connectToOverall(){
     this.socket.on('send-invite', (notification) => {
-      if(notification.receiver.name == this.profileService.currentUser.name){
+      if(notification.receiver.email == this.profileService.currentUser.email){
         this.notifications.push(notification);
       }
     })
 
     this.socket.on('send-group-invite', (notification) => {
-      if(notification.receiver.name == this.profileService.currentUser.name){
+      if(notification.receiver.email == this.profileService.currentUser.email){
         this.groupNotifications.push(notification);
+      }
+    })
+
+    this.socket.on('todo-notification-received', (notification) => {
+      if(notification.receiver.email == this.profileService.currentUser.email){
+        this.notifications.push(notification);
       }
     })
   }
@@ -103,12 +114,45 @@ export class NotificationService {
     return new Notification(sender, receiver, chat, isGroup, groupName);
   }
 
+  deleteTaskNotification(notification: Notification){
+    var foundNotification = this.notifications.findIndex(function(element) {
+      return(element.timeSent == notification.timeSent);
+    })
+
+    this.notifications.splice(foundNotification,1);
+    if(this.notifications.length == 0){
+      this.hide();
+    }
+  }
+
   showHide(){
     this.showing = !this.showing;
   }
 
   hide(){
     this.showing = false;
+  }
+
+  getNotificationsOnLogin(user: User){
+    //get notifications for user
+    //if this user is targetted, add to user profile todos as well
+    let params = '';
+    let options = new RequestOptions({
+      search: new URLSearchParams('email='+ user.email)
+    })
+    const url = currentBEaddress + '/todo';
+    this.http.get(url, options)
+    .map((response: Response) => {
+      var notifications = response.json().obj;
+      for(var i=0; i<notifications.length; i++){
+        if(notifications[i].isGroup){
+          this.groupNotifications.push(notifications[i]);
+        }
+        else{
+          this.notifications.push(notifications[i]);
+        }
+      }
+    });
   }
 
 }

@@ -9,12 +9,20 @@ import { Chat } from '../chat/chat.model';
 export class ProfileService {
   showing: boolean = false;
 
-  currentUser: User = null; //temp for manual testing
+  currentUser: User = null;
 
   //get user email
   //get user chats and list those that are groups
   //get contacts and list those
   //get user
+
+  setUser(user: User){
+    this.currentUser = user;
+    //this can then be used on relevant pages to get all the needed information if it has not been loaded yet... i think
+
+    console.log(this.currentUser.name);
+    console.log(this.currentUser.email);
+  }
 
   showHide(){
     this.showing = !this.showing;
@@ -22,11 +30,5 @@ export class ProfileService {
 
   hide(){
     this.showing = false;
-  }
-
-  setManualUser(user: string){
-    var newUser = new User(user, 'someemail' + user, [], [], []);
-    this.currentUser = newUser;
-    console.log("current user is " + this.currentUser.name);
   }
 }

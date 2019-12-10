@@ -4,9 +4,12 @@
   <header-component *ngIf="authService.userIsLoggedIn"></header-component>
 
   <div>
-    <button (click)="this.profileService.setManualUser('Max'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall()">Max</button>
-    <button (click)="this.profileService.setManualUser('Tom'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall()">Tom</button>
-    <button (click)="this.profileService.setManualUser('Lucie'); this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall()">Lucie</button>
+    <button (click)="this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall();
+    setUserMax();">Max</button>
+    <button (click)="this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall();
+    setUserTom();">Tom</button>
+    <button (click)="this.chatService.connectToOverall(); this.notificationService.connectToOverall(); this.contactService.connectToOverall(); this.todoService.connectToOverall();
+    setUserLucie();">Lucie</button>
   </div>
 
   <section class="second-section" *ngIf="authService.userIsLoggedIn && !profileService.showing && !notificationService.showing">
@@ -33,14 +36,20 @@
   </section>
 
   <section class="landing" *ngIf="!authService.userIsLoggedIn">
+    <section class="front-page-container">
+      <div id="big-logo" (click)="goHome()">
+        <div id="big-logo-container">
+          <img id="big-chapp-logo" src="/images/chapplogo4..png" alt="logo" width="250px">
+        </div>
+      </div>
+      <button class="btn btn-primary" *ngIf="!authService.isAuthenticated()" (click)="this.authService.login()">Log in</button>
+    </section>
   </section>
 </section>
 
 <footer>
 
 </footer>
-
-<auth-component></auth-component>
 
 <create-todo></create-todo>
 <delete-todo></delete-todo>

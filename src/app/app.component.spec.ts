@@ -11,11 +11,9 @@ import { HeaderComponent } from './layout/header/header.component';
 import { ChatContainerComponent } from './chat/chat-container.component';
 import { ContactListComponent } from './layout/contact-list/contact-list.component';
 import { ContactListItemComponent } from './layout/contact-list/contact-list-item.component';
-import { TodoContainerComponent } from './todos/todo-container.component';
 import { TodoListComponent } from './todos/todo-list.component';
 import { TodoComponent } from './todos/todo.component';
 import { ProfileComponent } from './profile/profile.component';
-import { AuthComponent } from './auth/auth.component';
 
 import { ChatService } from './chat/chat.service';
 import { ProfileService } from './profile/profile.service';
@@ -39,7 +37,7 @@ let profile: ProfileComponent;
 describe(`AppComponent tests`, () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent, TodoContainerComponent, TodoListComponent, TodoComponent, ProfileComponent, AuthComponent],
+      declarations: [AppComponent, ChatComponent, LogoComponent, TabsComponent, HeaderComponent, ChatContainerComponent, TabComponent, ContactListComponent, ContactListItemComponent, TodoListComponent, TodoComponent, ProfileComponent],
       imports: [
         FormsModule,
         RouterTestingModule.withRoutes(

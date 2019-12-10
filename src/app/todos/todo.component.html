@@ -1,14 +1,41 @@
 <section class="todo-container">
-  <section class="todo">
+  <section class="todo" [ngClass]="{'todo-complete': todo.complete}">
     <p class="todo-name"><b>{{todo.name}}</b></p>
     <p class="todo-importance" [ngClass]="todo.importance">{{todo.importance}}</p>
     <p class="todo-description">{{todo.description}}</p>
     <p class="todo-users" *ngFor="let user of todo.users">{{user.name}}</p>
-    <p class="todo-deadline">Due: {{this.date}}/{{this.month}}/{{this.year}}</p>
+    <p class="todo-deadline">Due: {{getDay(todo.deadline)}}/{{getMonth(todo.deadline)}}/{{getYear(todo.deadline)}}</p>
+    <p class="sub-todos-title" *ngIf="!subTasksShowing && todo.subTodos.length>0">Show subtasks
+      <i class="glyphicon glyphicon-chevron-right subtask-button" (click)="toggleSubtasks()"></i>
+    </p>
+    <p class="sub-todos-title" *ngIf="subTasksShowing && todo.subTodos.length>0">Hide subtasks
+      <i class="glyphicon glyphicon-chevron-down subtask-button" (click)="toggleSubtasks()"></i>
+    </p>
+    <section class="sub-todos" *ngIf="subTasksShowing">
+      <section *ngFor="let subTodo of todo.subTodos">
+        <section class="subtodo" [ngClass]="{'subtodo-complete': subTodo.complete}">
+          <p class="todo-name"><b>{{subTodo.name}}</b></p>
+          <p class="todo-importance" [ngClass]="todo.importance">{{subTodo.importance}}</p>
+          <p class="todo-description">{{subTodo.description}}</p>
+          <p class="todo-users" *ngFor="let user of subTodo.users">{{user.name}}</p>
+          <p class="todo-deadline">Due: {{getDay(subTodo.deadline)}}/{{getMonth(subTodo.deadline)}}/{{getYear(subTodo.deadline)}}</p>
+          <section class="todo-buttons">
+            <button class="edit-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleEdit(subTodo)">Edit</button>
+            <button class="complete-todo-button" *ngIf="(this.profileService.currentUser.name == todo.owner.name || this.checkSubuser(subTodo)) && !subTodo.complete" (click)="this.todoService.handleCompleteSub(subTodo)">Complete</button>
+            <button class="complete-todo-button" *ngIf="(this.profileService.currentUser.name == todo.owner.name || this.checkSubuser(subTodo)) && subTodo.complete" (click)="this.todoService.handleUncompleteSub(subTodo)">Uncomplete</button>
+            <button class="delete-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleRemoveSub(subTodo)">Delete</button>
+          </section>
+        </section>
+      </section>
+    </section>
     <section class="todo-buttons">
-      <button class="complete-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name || this.checkUser()" (click)="this.todoService.completeTodo()">Complete</button>
-      <button class="edit-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleEdit()">Edit</button>
-      <button class="delete-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleRemove()">Delete</button>
+      <button class="edit-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleEdit(todo)">Edit</button>
+      <button class="sub-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleCreateSubTodo(todo)">Add Sub Task</button>
+    </section>
+    <section class="todo-buttons">
+      <button class="complete-todo-button" *ngIf="(this.profileService.currentUser.name == todo.owner.name || this.checkUser()) && !todo.complete" (click)="this.todoService.handleComplete(todo)">Complete</button>
+      <button class="complete-todo-button" *ngIf="(this.profileService.currentUser.name == todo.owner.name || this.checkUser()) && todo.complete" (click)="this.todoService.handleUncomplete(todo)">Uncomplete</button>
+      <button class="delete-todo-button" *ngIf="this.profileService.currentUser.name == todo.owner.name" (click)="this.todoService.handleRemove(todo)">Delete</button>
     </section>
   </section>
 </section>

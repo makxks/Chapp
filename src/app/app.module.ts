@@ -30,7 +30,6 @@ import { EditTodoComponent } from './todos/todo-function-components/edit-todo.co
 import { DeleteTodoComponent } from './todos/todo-function-components/delete-todo.component';
 
 import { ProfileComponent } from './profile/profile.component';
-import { AuthComponent } from './auth/auth.component';
 
 import { NotificationListComponent } from './notifications/notification-list.component';
 import { NotificationComponent } from './notifications/notification.component';
@@ -67,7 +66,6 @@ import { routing } from './app.routing';
 		EditTodoComponent,
 		DeleteTodoComponent,
 		ProfileComponent,
-		AuthComponent,
 		NotificationListComponent,
 		NotificationComponent,
 	],

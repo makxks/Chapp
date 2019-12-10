@@ -26,4 +26,8 @@ export class ProfileComponent {
 	setTodoDay(todo: Todo){
 		return(new Date(todo.deadline).getDate())
 	}
+
+	toggleSubtasks(){
+
+	}
 }

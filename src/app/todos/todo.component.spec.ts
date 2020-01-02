@@ -51,7 +51,6 @@ describe(`TodoComponent tests`, () => {
     expect(todoElement).to.exist;
     expect(todoName.nativeElement.textContent).to.equal(todo.name);
     expect(todoDescription.nativeElement.textContent).to.equal(todo.description);
-    expect(todoUser.nativeElement.textContent).to.equal(todo.user);
     expect(todoDeadline.nativeElement.textContent).to.equal(todo.deadline);
   })
 

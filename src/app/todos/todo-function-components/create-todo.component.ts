@@ -23,6 +23,7 @@ export class CreateTodoComponent implements OnInit {
 	createTodoForm: FormGroup;
 	users: User[] = [];
 	selectedUsernames: string[] = [];
+	dateOffsetMinutes: number = new Date().getTimezoneOffset();
 
   constructor(private todoService: TodoService, private fb: FormBuilder, private contactService: ContactService) {
   }
@@ -37,7 +38,7 @@ export class CreateTodoComponent implements OnInit {
 			this.createTodoForm.value.details,
 			this.users,
 			//create a Date
-			new Date(this.createTodoForm.value.year, this.createTodoForm.value.month, this.createTodoForm.value.day).getTime(),
+			new Date(this.createTodoForm.value.year, this.createTodoForm.value.month, this.createTodoForm.value.day).getTime() + 43200000,
 			this.chat,
 			this.isSubTodo,
 			this.parentTodo,

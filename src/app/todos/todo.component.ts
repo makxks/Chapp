@@ -15,6 +15,7 @@ import { User } from '../auth/user.model';
 export class TodoComponent implements OnInit {
 	@Input() todo: Todo;
 	subTasksShowing: boolean = false;
+	dateOffsetMinutes: number = new Date().getTimezoneOffset();
 
 	constructor(private profileService: ProfileService, private todoService: TodoService){}
 
@@ -26,14 +27,7 @@ export class TodoComponent implements OnInit {
 	}
 
 	getMonth(deadline: number){
-		var month;
-		month = new Date(deadline).getMonth();
-		if(month == 0) {
-			return 12;
-		}
-		else {
-			return new Date(deadline).getMonth();
-		}
+		return new Date(deadline).getMonth() + 1;
 	}
 
 	getDay(deadline: number){

@@ -41,12 +41,6 @@ describe(`TodoListComponent tests`, () => {
     getTestBed().resetTestingModule();
   });
 
-  it('should contain a todo list', () => {
-    fixture.detectChanges();
-    let list = comp.todos;
-    expect(list).to.exist;
-  });
-
 
   /* snip */
 });

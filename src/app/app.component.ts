@@ -38,6 +38,7 @@ export class AppComponent implements OnInit {
 				"Max", "someemailMax", [], [], []
 			);
 			this.profileService.setUser(max);
+			this.authService.userIsLoggedIn = true;
 		}
 
 		setUserTom(){
@@ -45,6 +46,7 @@ export class AppComponent implements OnInit {
 				"Tom", "someemailTom", [], [], []
 			);
 			this.profileService.setUser(tom);
+			this.authService.userIsLoggedIn = true;
 		}
 
 		setUserLucie(){
@@ -52,5 +54,6 @@ export class AppComponent implements OnInit {
 				"Lucie", "someemailLucie", [], [], []
 			);
 			this.profileService.setUser(lucie);
+			this.authService.userIsLoggedIn = true;
 		}
 }

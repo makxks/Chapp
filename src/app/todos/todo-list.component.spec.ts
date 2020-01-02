@@ -2,7 +2,7 @@ import { getTestBed, TestBed, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
 import { TodoListComponent } from './todo-list.component';
 import { TodoComponent } from './todo.component';

@@ -1,10 +1,11 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { mergeMap, map } from 'rxjs/Operators';
 import * as io from 'socket.io-client';
 
 import { HttpClient } from '@angular/common/http';
-import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/common/http';
+import { HttpResponse, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 
 import { Notification } from './notification.model';
 import { User } from '../auth/user.model';

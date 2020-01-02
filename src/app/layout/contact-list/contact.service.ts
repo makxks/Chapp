@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 
 import { HttpClient } from '@angular/common/http';

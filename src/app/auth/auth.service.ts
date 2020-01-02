@@ -1,15 +1,14 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
-import { mergeMap } from 'rxjs/Operators';
+import { mergeMap, map } from 'rxjs/Operators';
 import * as jwt_decode from 'jwt-decode';
 
 import { HttpClient } from '@angular/common/http';
 import { HttpResponse, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { URLSearchParams, RequestOptions } from '@angular/http';
 
 import { User } from './user.model';
-import { BEUser } from './beuser.model';
 //import { ErrorService } from '../errors/error.service';
 import { ProfileService } from '../profile/profile.service';
 import { ChatService } from '../chat/chat.service';
@@ -88,7 +87,6 @@ export class AuthService {
     this._idToken = authResult.idToken;
     this._expiresAt = expiresAt;
 
-    this.scheduleRenewal();
     const url = currentBEaddress + '/user';
     let params = new HttpParams();
     params.set('email', userProfile.email);
@@ -98,8 +96,8 @@ export class AuthService {
     //if user doesn't exist, add user and then set as logged in user
     return this.http.get(url, {
       headers, params
-    })
-      .map((response: BEUser) => {
+    }).pipe(
+      map((response: any) => {
         const responseObject = response;
         if(responseObject){
           this.userIsLoggedIn = true;
@@ -149,59 +147,10 @@ export class AuthService {
           this.profileService.setUser(user);
           //new user, no other data to get
         }
-      })
-      .catch((error: Response) => {
-        console.log(error.json());
-        return Observable.throw(error.json());
-      })
-  }
-
-  private renewLogin(authResult): void{
-    const expiresAt = (authResult.expiresIn * 1000) + Date.now();
-    this._accessToken = authResult.accessToken;
-    this._idToken = authResult.idToken;
-    this._expiresAt = expiresAt;
-
-    this.scheduleRenewal();
-  }
-
-  public renewTokens(): void {
-    this.auth0.checkSession({}, (err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.renewLogin(authResult);
-      } else if (err) {
-        alert ('Could not get a new token');
-        this.logout();
-      }
-    })
-  }
-
-  public scheduleRenewal() {
-    if(!this.isAuthenticated()) { return; }
-    this.unscheduleRenewal();
-
-    const expiresAt = this._expiresAt;
-
-    const expiresIn$ = Observable.of(expiresAt).pipe(
-      mergeMap(
-        expiresAt => {
-          const now = Date.now();
-          return Observable.timer(Math.max(1, expiresAt - now));
-        }
+      },
+      (error) => new Error()
       )
-    );
-    this.refreshSubscription = expiresIn$.subscribe(
-      () => {
-        this.renewTokens();
-        this.scheduleRenewal();
-      }
-    );
-  }
-
-  public unscheduleRenewal() {
-    if(this.refreshSubscription){
-      this.refreshSubscription.unsubscribe();
-    }
+    )
   }
 
   public isAuthenticated(): boolean {
@@ -216,7 +165,6 @@ export class AuthService {
     this._accessToken = '';
     this._idToken = '';
     this._expiresAt = 0;
-    this.unscheduleRenewal();
 
     this.auth0.logout({
       returnTo: window.location.origin
@@ -242,17 +190,19 @@ export class AuthService {
 
   public addUser(user: User){
     const body = JSON.stringify(user);
-    const headers = new Headers({'Content-Type': 'application/json'});
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
     const url = currentBEaddress + '/user';
     return this.http.post(url, body, {headers: headers})
-      .map((response: Response) => {
-        console.log(response);
-        response.json();
-      })
-      .catch((error: Response) => {
-        console.log(error.json());
-        return Observable.throw(error.json());
-      })
+      .pipe(
+        map((response: Response) => {
+          console.log(response);
+          response.json();
+        },
+        (error: Response) => {
+          console.log(error.json());
+          return observableThrowError(error.json());
+        })
+      )
   }
 
   public handleAuthClick(type: string){

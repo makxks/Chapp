@@ -3,8 +3,8 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
-import { Http } from '@angular/http';
-import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/common/http';
 
 import { User } from '../../auth/user.model';
 import { Chat } from '../../chat/chat.model';
@@ -30,7 +30,7 @@ export class ContactService {
 
 	contactUsers: User[] = [];
 
-  constructor(private http: Http, private profileService: ProfileService, private chatService: ChatService, private notificationService: NotificationService){}
+  constructor(private http: HttpClient, private profileService: ProfileService, private chatService: ChatService, private notificationService: NotificationService){}
 
   connectToOverall(){
     this.socket.on('received', (notification) => {

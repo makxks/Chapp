@@ -3,8 +3,8 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
-import { Http } from '@angular/http';
-import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/common/http';
 
 import { Notification } from './notification.model';
 import { User } from '../auth/user.model';
@@ -26,7 +26,7 @@ export class NotificationService {
 
   groupNotifications: Notification[] = [];
 
-  constructor(private profileService: ProfileService, private chatService: ChatService, private http: Http){}
+  constructor(private profileService: ProfileService, private chatService: ChatService, private http: HttpClient){}
 
   connectToOverall(){
     this.socket.on('send-invite', (notification) => {

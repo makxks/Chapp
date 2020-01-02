@@ -4,10 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import { mergeMap } from 'rxjs/Operators';
 import * as jwt_decode from 'jwt-decode';
 
-import { Http } from '@angular/http';
-import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { HttpResponse, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
+import { URLSearchParams, RequestOptions } from '@angular/http';
 
 import { User } from './user.model';
+import { BEUser } from './beuser.model';
 //import { ErrorService } from '../errors/error.service';
 import { ProfileService } from '../profile/profile.service';
 import { ChatService } from '../chat/chat.service';
@@ -44,7 +46,7 @@ export class AuthService {
 
   refreshSubscription: any;
 
-  constructor(/*public errorService: ErrorService,*/ private http: Http, private profileService: ProfileService, private notificationService: NotificationService, private todoService: TodoService, private chatService: ChatService, private contactService: ContactService) {
+  constructor(/*public errorService: ErrorService,*/ private http: HttpClient, private profileService: ProfileService, private notificationService: NotificationService, private todoService: TodoService, private chatService: ChatService, private contactService: ContactService) {
     this._idToken = '';
     this._accessToken = '';
     this._expiresAt = 0;
@@ -88,17 +90,18 @@ export class AuthService {
 
     this.scheduleRenewal();
     const url = currentBEaddress + '/user';
-    let params = '';
-    let options = new RequestOptions({
-        search: new URLSearchParams('email='+userProfile.email)
-    });
+    let params = new HttpParams();
+    params.set('email', userProfile.email);
+    let headers = new HttpHeaders();
     //get user
     //if user exists set as logged in user (set variables here, and set user in profile)
     //if user doesn't exist, add user and then set as logged in user
-    return this.http.get(url, options)
-      .map((response: Response) => {
-        const responseObject = response.json().obj;
-        if(responseObject.message == 'Success'){
+    return this.http.get(url, {
+      headers, params
+    })
+      .map((response: BEUser) => {
+        const responseObject = response;
+        if(responseObject){
           this.userIsLoggedIn = true;
 
           var contactNames = [];
@@ -114,7 +117,7 @@ export class AuthService {
           }
 
           var user = new User(
-            responseObject.username,
+            responseObject.name,
             responseObject.email,
             contactNames,
             chatNames,

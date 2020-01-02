@@ -3,8 +3,8 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 
-import { Http } from '@angular/http';
-import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/common/http';
 
 import { ProfileService } from '../profile/profile.service';
 import { ChatService } from '../chat/chat.service';

@@ -3,8 +3,8 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
-import { Http } from '@angular/http';
-import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/common/http';
 
 import { ProfileService } from '../profile/profile.service';
 
@@ -31,7 +31,7 @@ export class ChatService {
   deleteGroupOccurred = new EventEmitter<Chat>();
   showGroupDetailsOccurred = new EventEmitter<Chat>();
 
-  constructor(private http: Http, private profileService: ProfileService){}
+  constructor(private http: HttpClient, private profileService: ProfileService){}
 
   connectToOverall(){
     this.socket.on('created-chat-room', (chat) => {

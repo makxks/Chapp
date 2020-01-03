@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import 'rxjs/Rx';
 import { Observable } from 'rxjs';
-import { mergeMap, map } from 'rxjs/Operators';
+import { mergeMap, map } from 'rxjs/operators';
 import * as io from 'socket.io-client';
 
 import { HttpClient } from '@angular/common/http';
@@ -19,7 +18,7 @@ var currentBEaddress = "http://localhost:3000";
 @Injectable()
 export class NotificationService {
   private url = 'http://localhost:3000';
-  socket: SocketIOClient.Socket = io();
+  socket: SocketIOClient.Socket = io.connect();
 
   showing: boolean = false;
 

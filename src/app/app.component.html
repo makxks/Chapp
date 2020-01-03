@@ -42,7 +42,7 @@
           <img id="big-chapp-logo" src="/images/chapplogo4..png" alt="logo" width="250px">
         </div>
       </div>
-      <button class="btn btn-primary" *ngIf="!authService.isAuthenticated()" (click)="this.authService.login()">Log in</button>
+      <button class="btn btn-primary" (click)="this.authService.login()">Log in</button>
     </section>
   </section>
 </section>

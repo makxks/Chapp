@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import 'rxjs/Rx';
 import { Observable } from 'rxjs';
-import { mergeMap, map } from 'rxjs/Operators';
+import { mergeMap, map } from 'rxjs/operators';
 import * as io from 'socket.io-client';
 
 import { HttpClient } from '@angular/common/http';
@@ -18,7 +17,7 @@ var currentBEaddress = "http://localhost:3000";
 @Injectable()
 export class ChatService {
   private url = 'http://localhost:3000';
-  socket: SocketIOClient.Socket = io();
+  socket: SocketIOClient.Socket = io.connect();
 
   selectedGroup: string = "";
   openGroups: string[] = [];
@@ -198,7 +197,7 @@ export class ChatService {
     return new Chat("", null, [], false, []);
   }
 
-  getChatsOnLogin(user:User){
+  /*getChatsOnLogin(user:User){
     let params = '';
     let options = new RequestOptions({
       search: new URLSearchParams('email='+user.email)
@@ -242,5 +241,5 @@ export class ChatService {
       }
     })
     return transformedMessages;
-  }
+  }*/
 }

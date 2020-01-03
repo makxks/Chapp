@@ -1,10 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import 'rxjs/Rx';
 import { Observable } from 'rxjs';
 import * as io from 'socket.io-client';
 
 import { HttpClient } from '@angular/common/http';
-import { Response, Headers, URLSearchParams, RequestOptions } from '@angular/common/http';
+import { HttpResponse, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 
 import { User } from '../../auth/user.model';
 import { Chat } from '../../chat/chat.model';
@@ -19,7 +18,7 @@ var currentBEaddress = "http://localhost:3000";
 @Injectable()
 export class ContactService {
   private url = 'http://localhost:3000';
-  socket: SocketIOClient.Socket = io();
+  socket: SocketIOClient.Socket = io.connect();
 
   addNewContactOccurred = new EventEmitter<void>();
   removeContactOccurred = new EventEmitter<User>();

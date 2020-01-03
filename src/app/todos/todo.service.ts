@@ -1,7 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import 'rxjs/Rx';
 import { Observable } from 'rxjs';
-import { mergeMap, map } from 'rxjs/Operators';
+import { mergeMap, map } from 'rxjs/operators';
 import * as io from 'socket.io-client';
 
 import { HttpClient } from '@angular/common/http';
@@ -20,7 +19,7 @@ var currentBEaddress = "http://localhost:3000";
 @Injectable()
 export class TodoService {
   private url = 'http://localhost:3000';
-  socket: SocketIOClient.Socket = io();
+  socket: SocketIOClient.Socket = io.connect();
 
   createTodoOccurred = new EventEmitter<Chat>();
   createSubTodoOccurred = new EventEmitter<Todo>();
@@ -29,7 +28,7 @@ export class TodoService {
   deleteTodoOccurred = new EventEmitter<Todo>();
   deleteSubTodoOccurred = new EventEmitter<Todo>();
 
-  constructor(private http: Http, private profileService: ProfileService, private chatService: ChatService){}
+  constructor(private http: HttpClient, private profileService: ProfileService, private chatService: ChatService){}
 
   connectToOverall(){
     this.socket.on('todo-added', (todo) => {

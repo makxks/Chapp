@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import 'rxjs/Rx';
 import { Observable } from 'rxjs';
-import { mergeMap, map } from 'rxjs/Operators';
+import { mergeMap, map } from 'rxjs/operators';
 
 import { User } from '../auth/user.model';
 import { Chat } from '../chat/chat.model';

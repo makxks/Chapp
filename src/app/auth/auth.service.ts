@@ -1,12 +1,14 @@
-
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import {throwError,  Observable, from, of, BehaviorSubject, combineLatest } from 'rxjs';
 import { Injectable, EventEmitter } from '@angular/core';
-import 'rxjs/Rx';
-import { mergeMap, map } from 'rxjs/Operators';
+import { mergeMap, map, tap, catchError, concatMap, shareReplay } from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
+
+import createAuth0Client from '@auth0/auth0-spa-js';
+import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 
 import { HttpClient } from '@angular/common/http';
 import { HttpResponse, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { User } from './user.model';
 //import { ErrorService } from '../errors/error.service';
@@ -20,193 +22,122 @@ declare var auth0: any;
 
 var currentBEaddress = "http://localhost:3000";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   authCallOccurred = new EventEmitter<String>();
 
-  auth0 = new auth0.WebAuth({
-    domain: 'makks.eu.auth0.com',
-    clientID: 'asLK8UP5QoSpU8ZZ8x8ZY82fnjSWb4pl',
-    // specify your desired callback URL
-    redirectUri: 'https://ch-a-pp.herokuapp.com/',
-    responseType: 'token id_token',
-    scope: 'openid profile'
-  });
-
-  private _idToken: string;
-  private _accessToken: string;
-  private _expiresAt: number;
-
-  public incorrectUserOrPassword = false;
-  public userIsLoggedIn: boolean = false;
-  public loggedInUser: string = "";
-
-  userProfile: any;
-
-  refreshSubscription: any;
-
-  constructor(/*public errorService: ErrorService,*/ private http: HttpClient, private profileService: ProfileService, private notificationService: NotificationService, private todoService: TodoService, private chatService: ChatService, private contactService: ContactService) {
-    this._idToken = '';
-    this._accessToken = '';
-    this._expiresAt = 0;
-  }
-
-  public getAccessToken(): string {
-    return this._accessToken;
-  }
-
-  public getIdToken(): string {
-    return this._idToken;
-  }
-
-  public handleAuthentication(): void {
-    this.incorrectUserOrPassword = false;
-    this.auth0.parseHash({ _idTokenVerification: false}, (err: any, authResult: any) => {
-      if(err) {
-        var errorCode = err.code;
-        var errorMessage = err.message;
-        //this.errorService.handleError(err);
-      }
-      if(authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        this.getProfile((err, profile) => {
-          this.userProfile = profile;
-        });
-        this.localLogin(authResult, this.userProfile);
-      }
-    });
-  }
-
-  public login(): void {
-    this.auth0.authorize();
-  }
-
-  private localLogin(authResult, userProfile: any) {
-    const expiresAt = (authResult.expiresIn * 1000) + Date.now();
-    this._accessToken = authResult.accessToken;
-    this._idToken = authResult.idToken;
-    this._expiresAt = expiresAt;
-
-    const url = currentBEaddress + '/user';
-    let params = new HttpParams();
-    params.set('email', userProfile.email);
-    let headers = new HttpHeaders();
-    //get user
-    //if user exists set as logged in user (set variables here, and set user in profile)
-    //if user doesn't exist, add user and then set as logged in user
-    return this.http.get(url, {
-      headers, params
-    }).pipe(
-      map((response: any) => {
-        const responseObject = response;
-        if(responseObject){
-          this.userIsLoggedIn = true;
-
-          var contactNames = [];
-          var chatNames = [];
-          //sort contacts => contactNames array
-          //sort chats => chatNames array
-          for(var i=0; i<responseObject.contacts.length; i++){
-            contactNames.push(responseObject.contacts[i].name);
-          }
-
-          for(var j=0; j<responseObject.chats.length; j++){
-            chatNames.push(responseObject.chats[j].name);
-          }
-
-          var user = new User(
-            responseObject.name,
-            responseObject.email,
-            contactNames,
-            chatNames,
-            responseObject.todos
-          )
-          this.loggedInUser = user.email;
-          this.profileService.setUser(user);
-          //get data from all other services for this user
-
-          //1. get contacts
-          this.contactService.getContactsOnLogin(user);
-          this.contactService.getGroupsOnLogin(user);
-          //2. get chats
-          this.chatService.getChatsOnLogin(user);
-          //3. get messages -> will be done in each chats component individually and loaded into that chat
-          //4. get todos -> held by profile of targetted user and by chat - need to get todos for every chat loaded and apply them to the loaded user if applicable
-          //5. get notifications
-        }
-        else{
-          var user = new User(
-            userProfile.name,
-            userProfile.email,
-            [],
-            [],
-            []
-          )
-          this.loggedInUser = user.email;
-          this.addUser(user);
-          this.profileService.setUser(user);
-          //new user, no other data to get
-        }
-      },
-      (error) => new Error()
-      )
-    )
-  }
-
-  public isAuthenticated(): boolean {
-    return this._accessToken && Date.now() < this._expiresAt;
-  }
-
-  public isIncorrect(): boolean {
-    return this.incorrectUserOrPassword;
-  }
-
-  public logout(): void {
-    this._accessToken = '';
-    this._idToken = '';
-    this._expiresAt = 0;
-
-    this.auth0.logout({
-      returnTo: window.location.origin
-    });
-    this.loggedInUser = "";
-    this.userIsLoggedIn = false;
-  }
-
-  public getProfile(cb): void {
-    if(!this._accessToken){
-      throw new Error('Access Token must exist to fetch profile');
-    }
-
-    const self = this;
-
-    this.auth0.client.userInfo(this._accessToken, (err, profile) => {
-      if (profile) {
-        self.userProfile = profile;
-      }
-      cb(err, profile);
+  auth0Client$ = (from(
+    createAuth0Client({
+      domain: "makks.eu.auth0.com",
+      client_id: "asLK8UP5QoSpU8ZZ8x8ZY82fnjSWb4pl",
+      redirect_uri: `${window.location.origin}`
     })
+  ) as Observable<Auth0Client>).pipe(
+    shareReplay(1), // Every subscription receives the same shared value
+    catchError(err => throwError(err))
+  );
+
+
+  isAuthenticated$ = this.auth0Client$.pipe(
+    concatMap((client: Auth0Client) => from(client.isAuthenticated())),
+    tap(res => this.loggedIn = res)
+  );
+
+  handleRedirectCallback$ = this.auth0Client$.pipe(
+    concatMap((client: Auth0Client) => from(client.handleRedirectCallback()))
+  );
+
+  private userProfileSubject$ = new BehaviorSubject<any>(null);
+  userProfile$ = this.userProfileSubject$.asObservable();
+  // Create a local property for login status
+  loggedIn: boolean = null;
+
+  constructor(private router: Router) {
+    // On initial load, check authentication state with authorization server
+    // Set up local auth streams if user is already authenticated
+    this.localAuthSetup();
+    // Handle redirect from Auth0 login
+    this.handleAuthCallback();
   }
 
-  public addUser(user: User){
-    const body = JSON.stringify(user);
-    const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    const url = currentBEaddress + '/user';
-    return this.http.post(url, body, {headers: headers})
-      .pipe(
-        map((response: Response) => {
-          console.log(response);
-          response.json();
-        },
-        (error: Response) => {
-          console.log(error.json());
-          return observableThrowError(error.json());
+  // When calling, options can be passed if desired
+  // https://auth0.github.io/auth0-spa-js/classes/auth0client.html#getuser
+  getUser$(options?): Observable<any> {
+    return this.auth0Client$.pipe(
+      concatMap((client: Auth0Client) => from(client.getUser(options))),
+      tap(user => this.userProfileSubject$.next(user))
+    );
+  }
+
+  private localAuthSetup() {
+    // This should only be called on app initialization
+    // Set up local authentication streams
+    const checkAuth$ = this.isAuthenticated$.pipe(
+      concatMap((loggedIn: boolean) => {
+        if (loggedIn) {
+          // If authenticated, get user and set in app
+          // NOTE: you could pass options here if needed
+          return this.getUser$();
+        }
+        // If not authenticated, return stream that emits 'false'
+        return of(loggedIn);
+      })
+    );
+    checkAuth$.subscribe();
+  }
+
+  login(redirectPath: string = '/') {
+    // A desired redirect path can be passed to login method
+    // (e.g., from a route guard)
+    // Ensure Auth0 client instance exists
+    this.auth0Client$.subscribe((client: Auth0Client) => {
+      // Call method to log in
+      client.loginWithRedirect({
+        redirect_uri: `${window.location.origin}`,
+        appState: { target: redirectPath }
+      });
+    });
+  }
+
+  private handleAuthCallback() {
+    // Call when app reloads after user logs in with Auth0
+    const params = window.location.search;
+    if (params.includes('code=') && params.includes('state=')) {
+      let targetRoute: string; // Path to redirect to after login processsed
+      const authComplete$ = this.handleRedirectCallback$.pipe(
+        // Have client, now call method to handle auth callback redirect
+        tap(cbRes => {
+          // Get and set target redirect route from callback results
+          targetRoute = cbRes.appState && cbRes.appState.target ? cbRes.appState.target : '/';
+        }),
+        concatMap(() => {
+          // Redirect callback complete; get user and login status
+          return combineLatest([
+            this.getUser$(),
+            this.isAuthenticated$
+          ]);
         })
-      )
+      );
+      // Subscribe to authentication completion observable
+      // Response will be an array of user and login status
+      authComplete$.subscribe(([user, loggedIn]) => {
+        // Redirect to target route after callback processing
+        this.router.navigate([targetRoute]);
+      });
+    }
   }
 
-  public handleAuthClick(type: string){
-    this.authCallOccurred.emit(type);
+  logout() {
+    // Ensure Auth0 client instance exists
+    this.auth0Client$.subscribe((client: Auth0Client) => {
+      // Call method to log out
+      client.logout({
+        client_id: "asLK8UP5QoSpU8ZZ8x8ZY82fnjSWb4pl",
+        returnTo: `${window.location.origin}`
+      });
+    });
   }
 
 }

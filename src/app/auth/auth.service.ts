@@ -18,8 +18,6 @@ import { ContactService } from '../layout/contact-list/contact.service';
 import { TodoService } from '../todos/todo.service';
 import { NotificationService } from '../notifications/notification.service';
 
-declare var auth0: any;
-
 var currentBEaddress = "http://localhost:3000";
 
 @Injectable({
@@ -54,7 +52,8 @@ export class AuthService {
   // Create a local property for login status
   loggedIn: boolean = null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+  private http: HttpClient, private profileService: ProfileService, private chatService: ChatService, private contactService: ContactService, private todoService: TodoService, private notificationService: NotificationService) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
     this.localAuthSetup();
@@ -64,10 +63,13 @@ export class AuthService {
 
   // When calling, options can be passed if desired
   // https://auth0.github.io/auth0-spa-js/classes/auth0client.html#getuser
-  getUser$(options?): Observable<any> {
+  getUser$(options?: any): Observable<any> {
     return this.auth0Client$.pipe(
       concatMap((client: Auth0Client) => from(client.getUser(options))),
-      tap(user => this.userProfileSubject$.next(user))
+      tap(user => {
+        this.checkExistingUser(user.email, user);
+        this.userProfileSubject$.next(user);
+      })
     );
   }
 
@@ -138,6 +140,64 @@ export class AuthService {
         returnTo: `${window.location.origin}`
       });
     });
+  }
+
+  createNewUser(user: User) {
+    const url = currentBEaddress + '/user';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(url, user, httpOptions)
+    .subscribe(response => {
+        console.log("created user: " + user.name + "\ngot: " + response);
+        this.connectOverall();
+      }),
+      catchError(error => of(`That shouldn't have happened! Caught ${error}`))
+  }
+
+  setLocalUser(BEResponseUser: any){
+    var localNamedEmptyUser = new User(BEResponseUser.username, BEResponseUser.email, [], [], []);
+    this.profileService.setUser(localNamedEmptyUser);
+    this.getUsersDataOnLogin(localNamedEmptyUser);
+  }
+
+  getUsersDataOnLogin(user: User) {
+    //start with user returned from check
+    //use BEResponseUser email to get all relevant data
+    //populate services and local sockets
+    this.notificationService.getNotificationsOnLogin(user);
+    this.contactService.getContactsOnLogin(user);
+    this.contactService.getGroupsOnLogin(user);
+    //connect overall
+    this.connectOverall();
+  }
+
+  connectOverall(){
+    this.chatService.connectToOverall();
+    this.notificationService.connectToOverall();
+    this.contactService.connectToOverall();
+    this.todoService.connectToOverall();
+  }
+
+  checkExistingUser(email:string, user: any){
+    const url = currentBEaddress + '/user/' + email;
+    return this.http.get<any>(url, { observe: 'response' })
+    .subscribe(resp => {
+      console.log(resp);
+      if(resp.body.obj != null){
+        // get stuff
+        this.setLocalUser(resp.body.obj);
+        return true; // user exists
+      }
+      else if(resp.body.obj == null){
+        // create user
+        var newUser = new User(user.nickname, user.email, [], [], []);
+        this.createNewUser(newUser);
+      }
+    }//, catchError( // add error constructor )
+    )
   }
 
 }

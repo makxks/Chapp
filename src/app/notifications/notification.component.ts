@@ -28,7 +28,7 @@ export class NotificationComponent implements OnInit {
 
 	ngOnInit(){
 		this.year = new Date(this.notification.timeSent).getFullYear();
-		this.month = new Date(this.notification.timeSent).getMonth();
+		this.month = new Date(this.notification.timeSent).getMonth()+1;
 		this.date = new Date(this.notification.timeSent).getDate();
 
 		this.hours = new Date(this.notification.timeSent).getHours();

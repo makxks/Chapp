@@ -399,27 +399,11 @@ export class TodoService {
     this.socket.emit('uncomplete-sub-todo', todo);
   }
 
-  getTodosOnLogin(chat:Chat, user: User){
-    //get Todos for chat
-    //if this user is targetted, add to user profile todos as well
-    let params = '';
-    let options = new RequestOptions({
-      search: new URLSearchParams('email='+ user.email)
-    })
-    const url = currentBEaddress + '/todo';
-    this.http.get(url, options)
-    .map((response: Response) => {
-      var todos = response.json().obj;
-      for(var i=0; i<todos.length; i++){
-        if(todos[i].chat.name == chat.name){
-          chat.todos.push(todos[i]);
-        }
-        for(var k=0; i<todos[i].users.length; k++){
-          if(this.profileService.currentUser.email == todos[i].users[i].email){
-            this.profileService.currentUser.todos.push(todos[i]);
-          }
-        }
-      }
-    });
+  getTodosOnLogin(chatId: string, user: User){
+    // get the correct chat, using the id
+    // from that chat, identify the correct chat in the tabs in the chat service
+    // get the todos that have been set for that chat
+    // add them to the chat in the tabs in the chat service
+    // if the targetted user is this user, add them to the profile service too
   }
 }

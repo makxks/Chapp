@@ -1,19 +1,23 @@
 <section class="profile-container">
   <h1>Your Profile</h1>
 
+  <section *ngIf="authService.userProfile$ | async as profile">
+
   <h3 class="name">Name</h3>
-  <h2 *ngIf="this.profileService.currentUser">{{this.profileService.currentUser.name}}</h2>
+  <h2>{{ profile.nickname }}</h2>
   <!-- display logged in users name -->
 
   <h3>Email</h3>
-  <h2 *ngIf="this.profileService.currentUser">{{this.profileService.currentUser.email}}</h2>
+  <h2>{{ profile.email }}</h2>
   <!-- display logged in users registered email -->
 
-  <section class="contacts-and-groups">
+  <!--<section class="contacts-and-groups">
     <section class="contacts">
-      <h3>Contacts</h3>
+      <h3>Contacts</h3>-->
+
       <!-- display a scrollable list of contacts -->
-      <section class="user-contacts">
+
+  <!--    <section class="user-contacts">
         <section class="user-contact-details" *ngFor="let user of this.contactService.contactUsers">
           <p>{{user.name}}</p>
           <p>{{user.email}}</p>
@@ -23,9 +27,11 @@
     </section>
 
     <section class="groups">
-      <h3>Groups</h3>
+      <h3>Groups</h3>-->
+
       <!-- display a scrollable list of this users groups -->
-      <section class="group-list">
+
+  <!--    <section class="group-list">
         <section class="user-group-details" *ngFor="let group of this.contactService.contactGroups">
           <p>{{group}}</p>
           <button class="btn btn-danger" (click)="this.contactService.handleLeaveGroup(group)">Leave Group</button>
@@ -34,9 +40,11 @@
     </section>
   </section>
 
-  <h3>Current Tasks</h3>
+  <h3>Current Tasks</h3>-->
+
   <!-- display a scrollable list of this users assigned tasks, importances of each and due dates for each -->
-  <section class="task-list">
+
+  <!--<section class="task-list">
     <section class="todo" *ngFor="let todo of this.profileService.currentUser.todos">
       <section class="todo-details">
         <p>{{todo.name}}</p>
@@ -56,5 +64,6 @@
       </section>
     </section>
   </section>
+  </section>-->
 
 </section>

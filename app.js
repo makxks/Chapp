@@ -16,8 +16,8 @@ var userRoutes = require('./routes/user');
 
 var app = express();
 
-//mongoose.connect('localhost:27017/TChat');
-//mongoose.connect('mongodb://makks:M0nument@ds253398.mlab.com:53398/tchattest');
+mongoose.connect('mongodb://localhost:27017/TChat');
+//mongoose.connect('makks:M0nument@ds253398.mlab.com:53398/tchattest');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

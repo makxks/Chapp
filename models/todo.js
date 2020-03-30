@@ -8,8 +8,8 @@ var Chat = require('./chat');
 var schema = new Schema({
   name: {type: String, required: true},
   description: {type: String, required:true},
-  owner: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-  targetUsers: [{type: Schema.Types.ObjectId, ref: 'User'}],
+  ownerEmail: {type: String, required: true},
+  targetUsers: [{type: String}],
   deadline: {type: Date},
   importance: {type: String},
   chat: {type: Schema.Types.ObjectId, ref: 'Chat'},

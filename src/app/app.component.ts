@@ -27,25 +27,4 @@ export class AppComponent implements OnInit {
 
 		ngOnInit(){
 		}
-
-		setUserMax(){
-			var max = new User(
-				"Max", "someemailMax", [], [], []
-			);
-			this.profileService.setUser(max);
-		}
-
-		setUserTom(){
-			var tom = new User(
-				"Tom", "someemailTom", [], [], []
-			);
-			this.profileService.setUser(tom);
-		}
-
-		setUserLucie(){
-			var lucie = new User(
-				"Lucie", "someemailLucie", [], [], []
-			);
-			this.profileService.setUser(lucie);
-		}
 }

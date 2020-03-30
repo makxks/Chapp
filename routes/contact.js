@@ -3,7 +3,7 @@ var router = express.Router();
 
 var User = require('../models/user');
 
-router.patch('/add/:newcontactemail', function (req, res, next) {
+router.patch('/add', function (req, res, next) {
   User.findOne({
     "email": req.query.email
   }, function(err, self){
@@ -14,7 +14,7 @@ router.patch('/add/:newcontactemail', function (req, res, next) {
       });
     }
     User.findOne({
-      "email": req.params.newcontactemail
+      "email": req.body.email
     }, function(err, newContact){
       if(err){
         return res.status(500).json({
@@ -106,9 +106,9 @@ router.get('/', function(res, req, next){
   })
 });
 
-router.get('/singleContact', function(res, req, next){
+router.get('/singleContact/:id', function(res, req, next){
   User.findOne({
-    "email": req.query.email
+    "email": req.params.email
   }, function(err, user){
     if(err){
       return res.status(500).json({

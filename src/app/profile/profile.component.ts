@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { Todo } from '../todos/todo.model';
 
 import { ContactService } from '../layout/contact-list/contact.service';
 import { ProfileService } from './profile.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component ({
 	selector: 'profile-component',
@@ -13,7 +13,7 @@ import { ProfileService } from './profile.service';
 })
 
 export class ProfileComponent {
-	constructor(private contactService: ContactService, private profileService: ProfileService){}
+	constructor(private authService: AuthService, private contactService: ContactService, private profileService: ProfileService){}
 
 	setTodoYear(todo: Todo){
 		return(new Date(todo.deadline).getFullYear());

@@ -27,15 +27,11 @@ export class HeaderComponent {
 		}
 	}
 
-	showLoginPage(){
-		this.authService.handleAuthClick('login');
+	login(){
+		this.authService.login();
 	}
 
-	showLogoutPage(){
-		this.authService.handleAuthClick('logout');
-	}
-
-	showSignupPage(){
-		this.authService.handleAuthClick('signup');
+	logout(){
+		this.authService.logout();
 	}
 }

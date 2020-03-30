@@ -68,12 +68,16 @@ router.post('/', function(req, res, next){
         error: err
       })
     }
+    const usersString = [];
+    for (var i=0; i < req.body.users.length; i++){
+      usersString.push(req.body.users[i].email);
+    }
     var chat = new Chat({
       name: req.body.name,
       description: req.body.description,
       isGroup: req.body.isGroup,
-      owner: user,
-      users: req.body.users,
+      owner: user.email,
+      users: usersString,
       last200: []
     });
     chat.save(function(err, result){
@@ -84,6 +88,44 @@ router.post('/', function(req, res, next){
         })
       }
     })
+    user.chats.push(chat);
+    user.save(function(err, result){
+      if(err){
+        return res.status(500).json({
+          title: "An error occurred",
+          error: err
+        })
+      }
+      res.status(200).json({
+        message: "Success",
+        obj: result
+      })
+    })
+  })
+});
+
+router.post('/2ndUser', function(req, res, next){
+  User.findOne({
+    "email": req.query.email
+  }, function(err, user){
+    if(err){
+      return res.status(500).json({
+        title: "An error occurred",
+        error: err
+      })
+    }
+    const usersString = [];
+    for (var i=0; i < req.body.users.length; i++){
+      usersString.push(req.body.users[i].email);
+    }
+    var chat = new Chat({
+      name: req.body.name,
+      description: req.body.description,
+      isGroup: req.body.isGroup,
+      owner: req.body.owner.email,
+      users: usersString,
+      last200: []
+    });
     user.chats.push(chat);
     user.save(function(err, result){
       if(err){
@@ -172,7 +214,7 @@ router.patch('/userLeaveGroup', function(req, res, next){
       )
       user.update(
         { _id: user._id },
-        { $pull: { 'chats': { name: req.body.name, owner: req.body.owner } } }
+        { $pull: { 'chats': { name: req.body.name, owner: req.body.owner.email } } }
       )
     })
   })

@@ -5,7 +5,7 @@
     <div class="detail-buffer"> </div>
   </section>
   <section class="notification-details">
-    <p class="detail">{{this.notification.sender.name}}</p>
+    <p class="detail">{{this.notification.sender}}</p>
     <p class="detail">{{this.hours}}:{{this.minutes}} {{this.date}}/{{this.month}}/{{this.year}}</p>
     <section class="button-group">
       <button class="btn btn-primary" (click)="this.contactService.emitAccept(this.notification); this.notificationService.agreeToNotification(this.notification)">Accept</button>
@@ -22,7 +22,7 @@
     <div class="detail-buffer-for-group"> </div>
   </section>
   <section class="notification-details">
-    <p class="detail-for-group">{{this.notification.sender.name}}</p>
+    <p class="detail-for-group">{{this.notification.sender}}</p>
     <p class="detail-for-group">{{this.notification.groupName}}</p>
     <p class="detail-for-group">{{this.hours}}:{{this.minutes}} {{this.date}}/{{this.month}}/{{this.year}}</p>
     <section class="button-group-for-group">
@@ -42,7 +42,7 @@
   </section>
   <section class="notification-details">
     <p class="detail-for-todo">{{this.notification.task.name}}
-    <p class="detail-for-todo">{{this.notification.sender.name}}</p>
+    <p class="detail-for-todo">{{this.notification.sender}}</p>
     <p class="detail-for-todo">{{this.notification.groupName}}</p>
     <p class="detail-for-todo">{{this.hours}}:{{this.minutes}} {{this.date}}/{{this.month}}/{{this.year}}</p>
     <section class="button-group-for-todo">

@@ -41,7 +41,7 @@ import { ProfileService } from './profile/profile.service';
 import { ContactService } from './layout/contact-list/contact.service';
 import { AuthService } from './auth/auth.service';
 
-import { routing } from './app.routing';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
 	declarations: [
@@ -74,7 +74,7 @@ import { routing } from './app.routing';
 		FormsModule,
 		ReactiveFormsModule,
 		HttpClientModule,
-		routing
+		AppRoutingModule
 	],
 	providers: [
 		ChatService,

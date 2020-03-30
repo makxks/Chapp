@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { mergeMap, map } from 'rxjs/operators';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 import * as io from 'socket.io-client';
 
 import { HttpClient } from '@angular/common/http';
@@ -17,7 +17,7 @@ var currentBEaddress = "http://localhost:3000";
 
 @Injectable()
 export class NotificationService {
-  private url = 'http://localhost:3000';
+  //private url = 'http://localhost:3000';
   socket: SocketIOClient.Socket = io.connect();
 
   showing: boolean = false;
@@ -30,19 +30,19 @@ export class NotificationService {
 
   connectToOverall(){
     this.socket.on('send-invite', (notification) => {
-      if(notification.receiver.email == this.profileService.currentUser.email){
+      if(notification.receiverEmail == this.profileService.currentUser.email){
         this.notifications.push(notification);
       }
     })
 
     this.socket.on('send-group-invite', (notification) => {
-      if(notification.receiver.email == this.profileService.currentUser.email){
+      if(notification.receiverEmail == this.profileService.currentUser.email){
         this.groupNotifications.push(notification);
       }
     })
 
     this.socket.on('todo-notification-received', (notification) => {
-      if(notification.receiver.email == this.profileService.currentUser.email){
+      if(notification.receiverEmail == this.profileService.currentUser.email){
         this.notifications.push(notification);
       }
     })
@@ -54,23 +54,27 @@ export class NotificationService {
     this.socket.emit('invite-created', notification);
     //this will send a notification to the requested user
     //they can accept or decline
+    this.sendNotification(user, notification);
   }
 
   addNewGroup(users: User[], groupName: string){
     for(var i=0; i<users.length; i++){
-      var newChat = new Chat(groupName, this.profileService.currentUser, [this.profileService.currentUser], true, []);
+      var newChat = new Chat(groupName, this.profileService.currentUser, [this.profileService.currentUser], true, [], "");
       var notification = this.createNotification(this.profileService.currentUser, users[i], newChat, true, groupName);
+      this.chatService.addNewChat(newChat);
       this.chatService.createChat(newChat);
       this.socket.emit('group-invite-created', notification);
+      this.sendNotification(users[i], notification);
     }
   }
 
   editGroup(groupName: string, newUsers: User[]){
     for(var i=0; i<newUsers.length; i++){
-      var newChat = new Chat(groupName, this.profileService.currentUser, [this.profileService.currentUser], true, []);
+      var newChat = new Chat(groupName, this.profileService.currentUser, [this.profileService.currentUser], true, [], "");
       var notification = this.createNotification(this.profileService.currentUser, newUsers[i], newChat, true, groupName);
       this.chatService.createChat(newChat);
       this.socket.emit('group-invite-created', notification);
+      this.sendNotification(newUsers[i], notification);
     }
   }
 
@@ -86,6 +90,8 @@ export class NotificationService {
     if(this.notifications.length == 0){
       this.hide();
     }
+
+    this.deleteNotification(notification);
   }
 
   agreeToNotification(notification: Notification){
@@ -97,6 +103,8 @@ export class NotificationService {
     if(this.notifications.length == 0){
       this.hide();
     }
+
+    this.deleteNotification(notification);
   }
 
   agreeToGroupNotification(notification: Notification){
@@ -108,6 +116,8 @@ export class NotificationService {
     if(this.groupNotifications.length == 0){
       this.hide();
     }
+
+    this.deleteNotification(notification);
   }
 
   createNotification(sender, receiver, chat, isGroup, groupName){
@@ -135,15 +145,11 @@ export class NotificationService {
 
   getNotificationsOnLogin(user: User){
     //get notifications for user
-    //if this user is targetted, add to user profile todos as well
-    let params = '';
-    let options = new RequestOptions({
-      search: new URLSearchParams('email='+ user.email)
-    })
-    const url = currentBEaddress + '/todo';
-    this.http.get(url, options)
-    .map((response: Response) => {
-      var notifications = response.json().obj;
+    const url = currentBEaddress + '/notification/' + user.email;
+    return this.http.get<any>(url, { observe: 'response' })
+    .subscribe(resp => {
+      var notifications = resp.body.obj;
+      console.log(resp);
       for(var i=0; i<notifications.length; i++){
         if(notifications[i].isGroup){
           this.groupNotifications.push(notifications[i]);
@@ -153,6 +159,27 @@ export class NotificationService {
         }
       }
     });
+  }
+
+  sendNotification(user: User, notification: Notification){
+    const url = currentBEaddress + '/notification/' + user.email;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(url, notification, httpOptions)
+    .subscribe(resp => {
+      console.log("created a notification " + resp);
+    })
+  }
+
+  deleteNotification(notification: Notification){
+    const url = currentBEaddress + '/notification/' + notification.receiver.email + "/" + notification.sender.email + "/" + notification.timeSent;
+    return this.http.delete<any>(url)
+    .subscribe(resp => {
+      console.log("deleted a notification " + resp);
+    })
   }
 
 }

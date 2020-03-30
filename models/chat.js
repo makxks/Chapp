@@ -6,8 +6,8 @@ var schema = new Schema({
   name: {type: String, required: true},
   description: {type: String, required:true},
   isGroup: {type: Boolean, required: true},
-  owner: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-  users: [{type: Schema.Types.ObjectId, ref: 'User'}],
+  owner: {type: String, required: true},
+  users: [{type: String}],
   last200: [{type: Schema.Types.ObjectId, ref: 'Message'}]
 });
 

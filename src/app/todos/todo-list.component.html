@@ -1,4 +1,4 @@
-<div class="todo-list-container">
+<div class="todo-list-container" *ngIf="this.chatService.selectedGroup!=''">
   <todo-component [todo]="todo" *ngFor="let todo of this.chatService.getSelectedChat().todos"></todo-component>
   <button class="new-todo-button" (click)="this.todoService.handleCreate(this.chatService.getSelectedChat())">Create Task</button>
 </div>

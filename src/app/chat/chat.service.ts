@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
-import * as io from 'socket.io-client';
+import io from 'socket.io-client';
 
 import { HttpClient } from '@angular/common/http';
 import { HttpResponse, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
@@ -11,12 +11,13 @@ import { ProfileService } from '../profile/profile.service';
 import { User } from '../auth/user.model';
 import { Message } from './message.model';
 import { Chat } from './chat.model';
+import { Todo } from '../todos/todo.model';
 
 var currentBEaddress = "http://localhost:3000";
 
 @Injectable()
 export class ChatService {
-  private url = 'http://localhost:3000';
+  //private url = 'http://localhost:3000';
   socket: SocketIOClient.Socket = io.connect();
 
   selectedGroup: string = "";
@@ -34,7 +35,7 @@ export class ChatService {
   constructor(private http: HttpClient, private profileService: ProfileService){}
 
   connectToOverall(){
-    this.socket.on('created-chat-room', (chat) => {
+    this.socket.on('created-chat-room', (chat: any) => {
       for(var i=0; i<chat.users.length; i++){
         if(chat.users[i].email == this.profileService.currentUser.email){
           if(!this.profileService.currentUser.chatNames.includes(chat.name)){
@@ -113,7 +114,7 @@ export class ChatService {
   }
 
   connect(groupname: string){
-    this.socketMap.set(groupname, io(this.url + "/?" + groupname));
+    this.socketMap.set(groupname, io(currentBEaddress + "/?" + groupname));
     if(this.socketMap.get(groupname)){
       this.socketMap.get(groupname).on('connect', () => {
 
@@ -144,7 +145,7 @@ export class ChatService {
       let observable = new Observable(observer => {
         this.socketMap.get(groupname).on('message', (data: any) => {
           observer.next(data);
-          var messageNumber;
+          var messageNumber: number;
           if(this.selectedGroup!=groupname){
             if(this.newMessageMap.get(groupname)){
               messageNumber = this.newMessageMap.get(groupname);
@@ -194,52 +195,101 @@ export class ChatService {
         return this.tabs[i];
       }
     }
-    return new Chat("", null, [], false, []);
+    return new Chat("", null, [], false, [], "");
   }
 
-  /*getChatsOnLogin(user:User){
-    let params = '';
-    let options = new RequestOptions({
-      search: new URLSearchParams('email='+user.email)
-    })
+  addNewChat(chat: Chat){
     const url = currentBEaddress + '/chat';
-    this.http.get(url, options)
-    .map((response: Response) => {
-      this.tabs = response.json().obj;
-      for(var i=0; i<this.tabs.length; i++){
-        this.profileService.currentUser.chatNames.push(this.tabs[i].name);
-        this.selectContact(this.tabs[i].name, this.tabs[i].isGroup);
-        this.openGroups.push(this.tabs[i].name);
-      }
-
-      // set to open groups, to tabs or to both //*should work
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      params: new HttpParams().set('email', chat.owner.email)
+    };
+    return this.http.post<any>(url, chat, httpOptions)
+    .subscribe(resp => {
+      console.log("added a chat: " + resp);
     })
   }
 
-  getMessagesOnLogin(chat:Chat, user:User){
-    var transformedMessages: Message[];
-    let params = '';
-    let options = new RequestOptions({
-      search: new URLSearchParams('email=' + user.name +'/chatName=' + chat.name + '/owner=' + chat.owner.name)
-    });
-    const url = currentBEaddress + '/message';
-    this.http.get(url, options)
-    .map((response: Response) => {
-      var messages = response.json().obj;
-
-      for(var i=0; i<messages.length; i++){
-        var newMessage = new Message(
-          messages[i].text,
-          messages[i].time,
-          messages[i].user,
-          messages[i].chat.name
-        )
-        transformedMessages.push(newMessage);
-        //sort by time
-        transformedMessages = transformedMessages.sort(function (a, b) { return a.time - b.time });
-        //add targetted user //*later
-      }
+  addIndChatToSecondUser(chat: Chat, user2: User){
+    const url = currentBEaddress + '/chat/2ndUser';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      params: new HttpParams().set('email', user2.email)
+    };
+    return this.http.post<any>(url, chat, httpOptions)
+    .subscribe(resp => {
+      console.log("added a chat: " + resp);
     })
-    return transformedMessages;
-  }*/
+  }
+
+  addUserToGroupChat(chat: Chat, user: User){
+
+  }
+
+  removeChat(){
+
+  }
+
+  populateGroupChat(chat: Chat, id: string, owner: string){
+    // get all users in group
+    const url = currentBEaddress + '/user/groupUsers/' + id;
+    return this.http.get<any>(url, { observe: 'response' })
+    .subscribe(resp => {
+        var users = resp.body.obj;
+        for(var i = 0; i < users.length; i++){
+          var newUser = new User(users[i].name, users[i].email, [], [], []);
+          chat.users.push(newUser);
+          this.getGroupChatOwner(chat, owner);
+        }
+      })
+  }
+
+  getGroupChatOwner(chat: Chat, owner: string){
+    // get group owner
+    const url = currentBEaddress + '/user/' + owner;
+    return this.http.get<any>(url, { observe: 'response' })
+    .subscribe(resp => {
+      var owner = new User(resp.body.name, resp.body.email, [], [], []);
+      chat.owner = owner;
+      this.getMessagesOnLogin(chat);
+    })
+  }
+
+  getMessagesOnLogin(chat:Chat){
+    const url = currentBEaddress + '/message';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      observe: 'response' as 'body',
+      params: new HttpParams().set('email', this.profileService.currentUser.email)
+      .set('owner', chat.owner.email)
+      .set('chatName', chat.name)
+    };
+    return this.http.get<any>(url, httpOptions)
+    .subscribe(resp => {
+      var messages = resp.body.obj;
+      for (var i = 0; i < messages.length; i++){
+        var message = new Message(messages[i].text, messages[i].time, messages[i].user, chat.name);
+        chat.messages.push(message);
+      }
+      chat.messages.sort(function(a,b){
+        return (a.time > b.time) ? 1 : ((b.time > a.time) ? -1 : 0);
+      });
+      this.createChat(chat);
+    })
+
+  }
+
+  addTodosToChat(todos: Todo[]){
+    for(var i=0; i<todos.length; i++){
+      for(var j=0; j<this.tabs.length; j++){
+        if(todos[i].chat)
+      }
+    }
+  }
 }

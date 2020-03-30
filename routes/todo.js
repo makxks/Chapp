@@ -48,8 +48,7 @@ router.post('/', function (req, res, next) {
 
 router.get('/', function (req, res, next) {
   Chat.findOne({
-    "name": req.query.chat,
-    "owner": req.query.owner,
+    "_id": req.query.id
   }), function(err, chat){
     if(err){
       return res.status(500).json({
@@ -59,7 +58,7 @@ router.get('/', function (req, res, next) {
     }
     if(chat){
       Todo.find({
-        "chat": chat
+        "chat": chat._id
       }, function(err, todos){
         res.status(200).json({
           message: 'Success',
